@@ -142,9 +142,8 @@ classdef RRT
                 x_rand = obj.sampleFree();
                 if(~isempty(x_rand))
                     x_nearest = obj.getNearestConf(x_rand);
-                    x_nearest = x_nearest';
-                    disp(size(x_nearest))
-                    x_new = obj.steer(x_nearest)
+                    x_nearest = x_neares
+                    x_new = obj.steer(x_nearest')
                     
                 end
             end
