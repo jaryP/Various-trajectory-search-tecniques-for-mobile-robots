@@ -1,23 +1,39 @@
 classdef unicycle
     properties 
-        currentConfig
-        q
+        %currentConfig
+        %q
         v
         omega
     end
     methods 
-        function obj = unicycle(initialConfig)
-            obj.q = initialConfig;
+        function obj = unicycle()
+            %obj.q = initialConfig;
             obj.v = 1;
             obj.omega = pi/4;
         end
-        function [xR,yR,qR] = getRandomConfig(x,y)
-               xR = rand * (x(1) -x(2)) + x(2);
-               yR = rand * (y(1) -y(2)) + y(2);
-               qR = rand * (pi + pi) - pi;
+        function randomConfig = getRandomConfig(obj,x,y)
+               x = rand * (x(1) -x(2)) + x(2);
+               y = rand * (y(1) -y(2)) + y(2);
+               q = rand * (2*pi) - pi;
+               randomConfig = [x, y, q];
         end
-        function dirKin = kinematics(theta)
-               dirKin = [ obj.v*cos(theta); obj.v*sin(theta); obj.omega ];
+        
+        function dirKin = directKinematics(obj, currentConfig)
+               dirKin = [0 obj.v*sin(obj.omega) obj.omega ];
+               dirKin = [dirKin; obj.v*cos(obj.omega) 0 obj.omega ];
+               dirKin = [dirKin; obj.v*cos(obj.omega) obj.v*sin(obj.omega) 0]';
+               dirKin = dirKin + currentConfig';
+               
         end
+        
+        function obj = setV(obj,v)
+            obj.v = v;
+        end
+         function obj = setOmega(obj,omega)
+            obj.omega = omega;
+         end
+         function obj = move(obj,primitiva)
+             obj.currentConfig=obj.currentConfig+primitiva;
+         end
     end  
 end
