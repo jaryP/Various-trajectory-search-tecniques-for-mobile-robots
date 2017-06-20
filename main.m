@@ -13,13 +13,13 @@ obst2_x = [1 2 2 1 1];
 obst2_y = [1 0 4 1 1];
 
 obst3_x = [3 4 4 3 3 ];
-obst3_y = [-4 -4  5 5 -4];
-
+obst3_y = [-4 -4  1 1 -4];
+plot(init_conf(1),init_conf(2),'o');
+plot(final_conf(1),final_conf(2),'+');
 
 hold on
 axis([x_min x_max y_min y_max]);
-plot(init_conf(1),init_conf(2),'o');
-plot(final_conf(1),final_conf(2),'+');
+
 plot(obst1_x,obst1_y);
 plot(obst2_x,obst2_y);
 plot(obst3_x,obst3_y);
@@ -29,4 +29,5 @@ obstacle = [polygon(obst1_x,obst1_y),polygon(obst2_x,obst2_y), polygon(obst3_x,o
 
 rrt = RRT(init_conf,final_conf,x_min, x_max,y_min,y_max,obstacle,robot);
 rrt.run();
+
 clear all

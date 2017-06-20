@@ -220,7 +220,7 @@ classdef RRT < handle
                         end
                         cart_dist =  norm(x_new -obj.final_node');
                         ang_dist = min(abs(obj.final_node(3)-x_new(3)), 2*pi-abs(obj.final_node(3)-x_new(3)));
-                        if cart_dist <= 0.1
+                        if cart_dist <= 0.2
                             'trovato'
                             break
                         end
