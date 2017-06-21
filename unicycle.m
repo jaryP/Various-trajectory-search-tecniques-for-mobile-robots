@@ -26,7 +26,7 @@ classdef unicycle
                dirKin = [dirKin; obj.v*cos(currentConfig(3)+obj.omega) obj.v*sin( currentConfig(3)+obj.omega) +obj.omega ];
                dirKin = [dirKin; obj.v*cos(currentConfig(3)) obj.v*sin(currentConfig(3)) 0]';
                
-               dirKin = dirKin + currentConfig;
+               dirKin = dirKin + [currentConfig currentConfig currentConfig];
                 
         end
         

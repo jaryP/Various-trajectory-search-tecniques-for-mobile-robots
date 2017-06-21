@@ -32,7 +32,7 @@ x = [0 0 0.1 0];
 y = [-0.05 +0.05 0 -0.05 ];
 R = [cos(0) -sin(0); sin(0), cos(0)];
 rot = [x' y']*R';
-rot = rot + [init_conf(1) init_conf(2)  ];
+rot = rot + [init_conf(1) init_conf(2);init_conf(1) init_conf(2);init_conf(1) init_conf(2);init_conf(1) init_conf(2)];
 fill(rot(:,1),rot(:,2),'r');
 
 plot(init_conf(1),init_conf(2),'o');

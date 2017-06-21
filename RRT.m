@@ -186,7 +186,7 @@ classdef RRT < handle
             y = [-0.05 +0.05 0 -0.05 ];
             R = [cos(qnew(3)) -sin(qnew(3)); sin(qnew(3)), cos(qnew(3))];
             rot = [x' y']*R';
-            rot = rot + [qnew(1) qnew(2)];
+            rot = rot + [qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2)];
             fill(rot(:,1),rot(:,2),'r');
 
                 
