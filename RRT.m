@@ -8,12 +8,14 @@ classdef RRT < handle
         obstacles
         robot
         status
+        maxIteration
+        goalBias
     end
     
     methods
         %costruttore. Parametri: configurazioni iniziale e finale del
         %robot, limiti del configuration space, array di ostacoli, robot
-        function obj = RRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,robot)
+        function obj = RRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,robot,maxIteration, goalBias)
                         
             x_i = q_i(1);
             y_i = q_i(2);
@@ -22,6 +24,9 @@ classdef RRT < handle
             x_f = q_f(1);
             y_f = q_f(2);
             teta_f = q_f(3);
+            
+            obj.maxIteration = maxIteration;
+            obj.goalBias = goalBias;
             
             if(x_i>=x_min)&&(y_i>=y_min)&&(x_i<=x_max)&&(y_f<=y_max)
                 obj.init_node = [x_i,y_i,teta_i];
@@ -46,7 +51,7 @@ classdef RRT < handle
         % ostacoli
         function W = sampleFree(obj)
  
-            if rand >= 0.5
+            if rand >= obj.goalBias
                 W = obj.final_node;
                 return
             end
@@ -63,7 +68,8 @@ classdef RRT < handle
                         return;
                     end
                 end
-            end   
+            end
+          obj.status = 'trapped';
           error('can not find free random config');
         end
         
@@ -82,10 +88,11 @@ classdef RRT < handle
                 total_dist = cart_dist;
                 if total_dist < min_dist
                     min_dist = total_dist;
+                    nearestNode = obj.nodes(i,:);
                     nearest_node_index = i;
                 end
             end
-            nearestNode = obj.nodes(nearest_node_index,:);
+            %nearestNode = obj.nodes(nearest_node_index,:);
         end
         
         % restituisce la primitiva più vicina a partire dal nearestNode e
@@ -100,7 +107,7 @@ classdef RRT < handle
                 return
             else
                 
-                newNode = obj.getClosestConfig(nearestNode,configurations);
+                newNode = obj.Config(nearestNode,configurations);
                 
                 while(size(configurations(2))>0)
                     
@@ -130,6 +137,7 @@ classdef RRT < handle
                     minimumDistConf = total_dist;
                     newConf_index = j;
                 end
+                
             end
             conf = config(:,newConf_index);
             plot(conf(1),conf(2),'.');
@@ -173,6 +181,15 @@ classdef RRT < handle
             newIndex = size(obj.nodes,1);
             obj.graph = addnode(obj.graph,newIndex');
             obj.graph = addedge(obj.graph,index,newIndex);
+
+            x = [0 0 0.1 0];
+            y = [-0.05 +0.05 0 -0.05 ];
+            R = [cos(qnew(3)) -sin(qnew(3)); sin(qnew(3)), cos(qnew(3))];
+            rot = [x' y']*R';
+            rot = rot + [qnew(1) qnew(2)];
+            fill(rot(:,1),rot(:,2),'r');
+
+                
             %disp(obj.graph)
         end
             
@@ -181,6 +198,7 @@ classdef RRT < handle
             configurations = obj.robot.directKinematics(xNear);
             
             minDist = Inf(1);
+            
             for c = configurations
                 dist = norm(c(1:2)-xRand(1:2));
                 if dist < minDist
@@ -199,12 +217,11 @@ classdef RRT < handle
             if(all(x_start == x_end))
                 obj.nodes
             else
-                while 1
+                for i=1:obj.maxIteration
                     
                     x_rand = obj.sampleFree();
                     
-                    
-                    txt1 = strcat('\leftarrow ',int2str(i));
+                    %txt1 = strcat('\leftarrow ',int2str(i));
                     %text(x_rand(1),x_rand(2),txt1);
                     
                     %disp(x_rand);
@@ -220,8 +237,9 @@ classdef RRT < handle
                         end
                         cart_dist =  norm(x_new -obj.final_node');
                         ang_dist = min(abs(obj.final_node(3)-x_new(3)), 2*pi-abs(obj.final_node(3)-x_new(3)));
-                        if cart_dist <= 0.2
-                            'trovato'
+     
+                        if cart_dist <= 0.4
+                            obj.status = 'reached';
                             break
                         end
                             
@@ -230,7 +248,8 @@ classdef RRT < handle
                         %obj.nodes
    
                     %leaves(obj.graph)
-                end
+                    end
+                obj.status = 'timeRunOut';
             end
         end
     end

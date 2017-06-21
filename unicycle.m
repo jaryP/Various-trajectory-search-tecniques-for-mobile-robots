@@ -8,7 +8,7 @@ classdef unicycle
     methods 
         function obj = unicycle()
             %obj.q = initialConfig;
-            obj.v = 0.1;
+            obj.v = 0.2;
             obj.omega = pi/4;
         end
         
@@ -24,10 +24,10 @@ classdef unicycle
                dirKin = [];
                dirKin = [obj.v*cos(currentConfig(3)-obj.omega) obj.v*sin( currentConfig(3)-obj.omega) -obj.omega ];
                dirKin = [dirKin; obj.v*cos(currentConfig(3)+obj.omega) obj.v*sin( currentConfig(3)+obj.omega) +obj.omega ];
-               dirKin = [dirKin; obj.v*cos(currentConfig(3)) obj.v*sin(currentConfig(3)) currentConfig(3)]';
+               dirKin = [dirKin; obj.v*cos(currentConfig(3)) obj.v*sin(currentConfig(3)) 0]';
                
                dirKin = dirKin + currentConfig;
-             
+                
         end
         
         function obj = setV(obj,v)
