@@ -48,85 +48,88 @@ classdef RRT < handle
         end
         
         function obj = getArc(obj,startConfig, endConfig)
+            radius = obj.robot.v;            
+            xC = 0;
+            yC = 0;
+            diff = endConfig-startConfig;
+            diff = diff(1:2);
+            diff = norm(diff);
             
-            angleDiff = wrapToPi(endConfig(3)-startConfig(3));
+            
+            
+            angleDiff = endConfig(3)-startConfig(3);
             
             if angleDiff == 0
                 return
             end
             
             th = 0:pi/50:pi/2;  
-            
-            if abs(wrapToPi(startConfig(3))) == 0 
+   
+            %th = 0:pi/50:2*pi;
+            %{
+                if angleDiff == pi/2
                 xC = startConfig(1);
                 yC = endConfig(2);
                 diff = endConfig-[xC ; yC; 0];
                 diff = diff(1:2);
                 diff = norm(diff);
-                if angleDiff >0
-                    x = diff*cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-                else
-                    x = diff*cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                    %plot(xC,yC,'*')
-                end    
-                plot(x,y); 
+                x = diff*cos(th) + xC;
+                y = diff*sin(th)+yC ;
+                startConfig(3)
+                endConfig(3)
+                plot(x,y);
+                plot(xC,yC,'*')
                 
-            elseif abs(wrapToPi(startConfig(3))) == pi 
+            elseif endConfig(3) == -pi/2
                 xC = startConfig(1);
                 yC = endConfig(2);
                 diff = endConfig-[xC ; yC; 0];
                 diff = diff(1:2);
                 diff = norm(diff);
+                x = diff*cos(th)+ xC;
+                y = diff*sin(th)+ yC ;
+                %plot(x,y);
+                %plot(xC,yC,'*')
                 
-                if angleDiff >0
-                    x = diff*-cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                else
-                    x = diff*-cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-                    %plot(xC,yC,'*')
-                    %plot(x,y); 
-                end
-                plot(x,y);  
-            elseif wrapToPi(startConfig(3)) == pi/2
-            %%DA FARE DEBUG
-                    xC = endConfig(1);
-                    yC = startConfig(2);
-                    diff = endConfig-[xC ; yC; 0];
-                    diff = diff(1:2);
-                    diff = norm(diff);
-                 if angleDiff > 0
-                    x = diff*cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                    %plot(xC,yC,'*')
-                 else
-                    x = diff*-cos(th) + xC;
-                    y = diff*sin(th)+yC ;  
-                    %plot(xC,yC,'*')
-                 end
-                 plot(x,y)
-                 
-            elseif wrapToPi(startConfig(3)) == -pi/2
-                    xC = endConfig(1);
-                    yC = startConfig(2);
-                    diff = endConfig-[xC ; yC; 0];
-                    diff = diff(1:2);
-                    diff = norm(diff);
-                 if angleDiff > 0
-                    x = diff*-cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-                 else
-                    x = diff*cos(th) + xC;
-                    y = diff*-sin(th)+yC ; 
-                 end
-                 plot(x,y);
+            elseif endConfig(3) == pi
+                xC = endConfig(1);
+                yC = startConfig(2);
+                diff = endConfig-[xC ; yC; 0];
+                diff = diff(1:2);
+                diff = norm(diff);
+                x = diff*cos(th) +xC;
+                y = diff*sin(th) +yC;
+                %plot(xC,yC,'*')
+                %%plot(x,y);
+                
+            else
+                 xC = endConfig(1);
+                yC = startConfig(2);
+                diff = endConfig-[xC ; yC; 0];
+                diff = diff(1:2);
+                diff = norm(diff);
+                x = diff*cos(th) +xC;
+                y = diff*-sin(th) + yC;
+                %plot(xC,yC,'*')
+                %plot(x,y);
             end
             
-          
+            %}
+            
+            if startConfig(3) == pi
+                if angleDiff >0
+                    
+                    angleDiff
+                else
+                    angleDiff
+                end
+            end
+           
+
+            
+            
+            
         end
-        
         
         % estrae una configurazione casuale, non in collisione con gli
         % ostacoli
@@ -247,10 +250,10 @@ classdef RRT < handle
             if(qnew(3) == qnear(3))
              plot(punti(:,1),punti(:,2));
             else
-             %plot(punti(:,1),punti(:,2),'.-');  
-             
+             plot(punti(:,1),punti(:,2),'.-');  
+             getArc(obj,qnear', qnew);
             end
-            getArc(obj,qnear', qnew);
+
             obj.nodes =  [obj.nodes; qnew'];
             newIndex = size(obj.nodes,1);
             obj.graph = addnode(obj.graph,newIndex');
@@ -261,7 +264,7 @@ classdef RRT < handle
             R = [cos(qnew(3)) -sin(qnew(3)); sin(qnew(3)), cos(qnew(3))];
             rot = [x' y']*R';
             rot = rot + [qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2)];
-            fill(rot(:,1),rot(:,2),'r');
+            %fill(rot(:,1),rot(:,2),'r');
 
                 
             %disp(obj.graph)
@@ -308,6 +311,8 @@ classdef RRT < handle
                         x_nearest = obj.getNearestConf(x_rand);
                         x_new = obj.steerJary(x_rand',x_nearest');
 
+                        
+                        
                         if obj.obstacleFree(x_nearest',x_new)
                             obj.addNewNode(x_new,x_nearest');
                         end

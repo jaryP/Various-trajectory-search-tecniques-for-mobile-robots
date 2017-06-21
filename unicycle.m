@@ -8,7 +8,7 @@ classdef unicycle
     methods 
         function obj = unicycle()
             %obj.q = initialConfig;
-            obj.v = 0.2;
+            obj.v = 0.3;
             obj.omega = pi/4;
         end
         
@@ -22,8 +22,8 @@ classdef unicycle
         function dirKin = directKinematics(obj, currentConfig)
             
                dirKin = [];
-               dirKin = [obj.v*cos(currentConfig(3)-obj.omega) obj.v*sin( currentConfig(3)-obj.omega) -obj.omega ];
-               dirKin = [dirKin; obj.v*cos(currentConfig(3)+obj.omega) obj.v*sin( currentConfig(3)+obj.omega) +obj.omega ];
+               dirKin = [obj.v*cos(currentConfig(3)-obj.omega) obj.v*sin( currentConfig(3)-obj.omega) -pi/2 ];
+               dirKin = [dirKin; obj.v*cos(currentConfig(3)+obj.omega) obj.v*sin( currentConfig(3)+obj.omega) +pi/2 ];
                dirKin = [dirKin; obj.v*cos(currentConfig(3)) obj.v*sin(currentConfig(3)) 0]';
                
                dirKin = dirKin + [currentConfig currentConfig currentConfig];

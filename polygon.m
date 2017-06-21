@@ -16,12 +16,13 @@ classdef polygon
             %Matrix with colum [x y]'
                         
             [xp, yp] = polyxpoly(x,y,obj.x,obj.y, 'unique');
-            
-            xi = [[] xp];
-            yi = [[] yp];
-            ins=inpolygon(x,y,obj.x,obj.y);
-            xi = [xi x(ins)]';
-            yi = [yi y(ins)]';
+            xi = xp;
+            yi = yp;
+            ins= inpolygon(x,y,obj.x,obj.y);
+            xin = x(ins)';
+            yin = y(ins)';
+            xi = [xi; xin]';
+            yi = [yi; yin]';
 
         end
         
