@@ -1,14 +1,11 @@
 classdef unicycle
     properties 
-        %currentConfig
-        %q
         v
         omega
     end
     methods 
         function obj = unicycle()
-            %obj.q = initialConfig;
-            obj.v = 0.3;
+            obj.v = 0.2;
             obj.omega = pi/4;
         end
         

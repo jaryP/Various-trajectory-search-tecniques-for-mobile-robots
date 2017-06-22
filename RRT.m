@@ -10,6 +10,7 @@ classdef RRT < handle
         status
         maxIteration
         goalBias
+        lastNode
     end
     
     methods
@@ -33,9 +34,10 @@ classdef RRT < handle
                 obj.final_node = [x_f,y_f,teta_f];
                 
                 nodes = [obj.init_node];
-                                
+                
+                obj.lastNode = [];
                 obj.nodes = nodes;
-                G = graph;
+                G = digraph;
                 G = addnode(G,1);
                 obj.graph = G;
                 obj.boundaries = [x_min, x_max; y_min, y_max];
@@ -46,12 +48,68 @@ classdef RRT < handle
                 error('position out of bounds');
             end
         end
+        function obj = plot(obj)
+            hold on
+            
+            th = 0:pi/50:2*pi;
+            xunit = 0.4 * cos(th) + obj.final_node(1);
+            yunit = 0.4 * sin(th) + obj.final_node(2);
+            plot(xunit, yunit);
+            
+            for o=obj.obstacles
+                plot(o.x,o.y,'b')
+            end
+            if strcmp(obj.status,'reached')
+                
+                [dist, path, pred] = graphshortestpath(adjacency(obj.graph), 1, size(obj.nodes,1));
+                for k=2:size(path,2)
+                    qpred = obj.nodes(path(k-1),:)';
+                    qactual = obj.nodes(path(k),:)';
+                    [x,y] = getMovement(obj,qpred,qactual);
+                    plot(x,y);
+                
+
+                    x = [0 0 0.1 0];
+                    y = [-0.05 +0.05 0 -0.05 ];
+                    R = [cos(qactual(3)) -sin(qactual(3)); sin(qactual(3)), cos(qactual(3))];
+                    rot = [x' y']*R';
+                    rot = rot + [qactual(1) qactual(2);qactual(1) qactual(2);qactual(1) qactual(2);qactual(1) qactual(2)];
+                    fill(rot(:,1),rot(:,2),'r');
+                    
+                end
+            else
+                
+                [i,j,s] = find(adjacency(obj.graph));
+                for k=1:size(i)
+                    [x,y] = getMovement(obj,obj.nodes(i(k),:)',obj.nodes(j(k),:)');
+                    plot(x,y);
+                end
+            
+            end
+            
+            x = [0 0 0.1 0];
+            y = [-0.05 +0.05 0 -0.05 ];
+            R = [cos(obj.init_node(3)) -sin(obj.init_node(3)); sin(obj.init_node(3)), cos(obj.init_node(3))];
+            rot = [x' y']*R';
+            rot = rot + [obj.init_node(1) obj.init_node(2);obj.init_node(1) obj.init_node(2);obj.init_node(1) obj.init_node(2);obj.init_node(1) obj.init_node(2)];
+            fill(rot(:,1),rot(:,2),'r');
+            
+            x = [0 0 0.1 0];
+            y = [-0.05 +0.05 0 -0.05 ];
+            R = [cos(obj.final_node(3)) -sin(obj.final_node(3)); sin(obj.final_node(3)), cos(obj.final_node(3))];
+            rot = [x' y']*R';
+            rot = rot + [obj.final_node(1) obj.final_node(2);obj.final_node(1) obj.final_node(2);obj.final_node(1) obj.final_node(2);obj.final_node(1) obj.final_node(2)];
+            fill(rot(:,1),rot(:,2),'r');
+            hold off
+        end
         
-        function obj = getArc(obj,startConfig, endConfig)
-            
+        function [x,y] = getMovement(obj,startConfig, endConfig)
+   
             angleDiff = wrapToPi(endConfig(3)-startConfig(3));
-            
+
             if angleDiff == 0
+                x = [startConfig(1)  endConfig(1)];
+                y = [startConfig(2)  endConfig(2)];
                 return
             end
             
@@ -63,16 +121,16 @@ classdef RRT < handle
                 diff = endConfig-[xC ; yC; 0];
                 diff = diff(1:2);
                 diff = norm(diff);
+                
                 if angleDiff >0
                     x = diff*cos(th) + xC;
                     y = diff*-sin(th)+yC ;
                 else
                     x = diff*cos(th) + xC;
                     y = diff*sin(th)+yC ;
-                    %plot(xC,yC,'*')
-                end    
-                plot(x,y); 
-                
+                    
+                end   
+
             elseif abs(wrapToPi(startConfig(3))) == pi 
                 xC = startConfig(1);
                 yC = endConfig(2);
@@ -86,10 +144,8 @@ classdef RRT < handle
                 else
                     x = diff*-cos(th) + xC;
                     y = diff*-sin(th)+yC ;
-                    %plot(xC,yC,'*')
-                    %plot(x,y); 
+
                 end
-                plot(x,y);  
             elseif wrapToPi(startConfig(3)) == pi/2
             %%DA FARE DEBUG
                     xC = endConfig(1);
@@ -100,13 +156,10 @@ classdef RRT < handle
                  if angleDiff > 0
                     x = diff*cos(th) + xC;
                     y = diff*sin(th)+yC ;
-                    %plot(xC,yC,'*')
                  else
                     x = diff*-cos(th) + xC;
                     y = diff*sin(th)+yC ;  
-                    %plot(xC,yC,'*')
                  end
-                 plot(x,y)
                  
             elseif wrapToPi(startConfig(3)) == -pi/2
                     xC = endConfig(1);
@@ -121,12 +174,10 @@ classdef RRT < handle
                     x = diff*cos(th) + xC;
                     y = diff*-sin(th)+yC ; 
                  end
-                 plot(x,y);
             end
             
           
-        end
-        
+        end  
         
         % estrae una configurazione casuale, non in collisione con gli
         % ostacoli
@@ -169,66 +220,18 @@ classdef RRT < handle
             end
         end
         
-        % restituisce la primitiva più vicina a partire dal nearestNode e
-        % se non è in collisione aggiunge all'albero la configurazione
-        
-        function newNode = steer(obj,nearestNode)
-            
-            configurations = obj.robot.directKinematics(nearestNode);
-            if(size(configurations(2))==0)
-                newNode = -1;
-                return
-            else
-                
-                newNode = obj.Config(nearestNode,configurations);
-                
-                while(size(configurations(2))>0)
-                    
-                    collisionCheck = obj.obstacleFree(nearestNode,newNode);
-                    
-                    if collisionCheck
-                        obj.addNewNode(newNode,nearestNode);
-                        break;
-                        
-                    else
-                        configurations(:,newConf_index) = [];
-                        newNode = obj.getClosestConfig(nearestNode,configurations);
-                    end
-                end
-            end
-        end
-        
-        function conf = getClosestConfig(~,qnear,config)
-            newConf_index = 0;
-            minimumDistConf = Inf(1);
-            for j=c
-                
-                cart_dist =  norm(qnear-c);
-                ang_dist = min(abs(qnear(3)-config(3,j)), 2*pi-abs(qnear(3)-config(3,j)));
-                total_dist = cart_dist + ang_dist;
-                if total_dist<=minimumDistConf
-                    minimumDistConf = total_dist;
-                    newConf_index = j;
-                end
-                
-            end
-            conf = config(:,newConf_index);
-            plot(conf(1),conf(2),'.');
-        end
-        
-        function flag = obstacleFree(obj, qnear, qnew)
-
-            flag = 0;
+        function collisionFlag = obstacleFree(obj,x,y)
+            collisionFlag = 0;
             for i=obj.obstacles
-                punti = [qnear';qnew'];
-                [x_coll,y_coll] = i.intersect(punti(:,1),punti(:,2));
+                [x_coll,y_coll] = i.intersect(x,y);
                 if ~isempty([x_coll,y_coll])
-                    flag = 1;
+                    collisionFlag = 1;
                     break
                 end
             end
-            flag  = ~flag;
+            collisionFlag  = ~collisionFlag;
         end
+
         
         function obj = addNewNode(obj, qnew, qnear)
 
@@ -240,34 +243,16 @@ classdef RRT < handle
             if sum(indexN) > 0
                 return
             end
-            
-           %plot(qnew(1),qnew(2),'*');
-            punti = [qnear';qnew'];
-            
-            if(qnew(3) == qnear(3))
-             plot(punti(:,1),punti(:,2));
-            else
-             %plot(punti(:,1),punti(:,2),'.-');  
-             
-            end
-            getArc(obj,qnear', qnew);
+
             obj.nodes =  [obj.nodes; qnew'];
             newIndex = size(obj.nodes,1);
-            obj.graph = addnode(obj.graph,newIndex');
+            obj.graph = addnode(obj.graph,newIndex);
             obj.graph = addedge(obj.graph,index,newIndex);
-
-            x = [0 0 0.1 0];
-            y = [-0.05 +0.05 0 -0.05 ];
-            R = [cos(qnew(3)) -sin(qnew(3)); sin(qnew(3)), cos(qnew(3))];
-            rot = [x' y']*R';
-            rot = rot + [qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2);qnew(1) qnew(2)];
-            fill(rot(:,1),rot(:,2),'r');
-
                 
             %disp(obj.graph)
         end
             
-        function newNode = steerJary(obj,xRand, xNear)
+        function newNode = steer(obj,xRand, xNear)
             
             configurations = obj.robot.directKinematics(xNear);
             
@@ -284,13 +269,8 @@ classdef RRT < handle
         
         function [] = run(obj)
             x_start = obj.init_node;
-            th = 0:pi/50:2*pi;
-            xunit = 0.4 * cos(th) + obj.final_node(1);
-            yunit = 0.4 * sin(th) + obj.final_node(2);
-            plot(xunit, yunit);
-           % disp(x_start);
+
             x_end = obj.final_node;
-            %disp(x_end);
             
             if(all(x_start == x_end))
                 obj.nodes
@@ -298,19 +278,16 @@ classdef RRT < handle
                 for i=1:obj.maxIteration
                     
                     x_rand = obj.sampleFree();
-                    
-                    %txt1 = strcat('\leftarrow ',int2str(i));
-                    %text(x_rand(1),x_rand(2),txt1);
-                    
-                    %disp(x_rand);
                     if(~isempty(x_rand))
                         
                         x_nearest = obj.getNearestConf(x_rand);
-                        x_new = obj.steerJary(x_rand',x_nearest');
-
-                        if obj.obstacleFree(x_nearest',x_new)
+                        x_new = obj.steer(x_rand',x_nearest');
+                        [x,y] = obj.getMovement(x_nearest,x_new);
+                       
+                        if obj.obstacleFree(x,y)
                             obj.addNewNode(x_new,x_nearest');
                         end
+
                         diff = x_new - obj.final_node';
                         diff = diff(1:2);
                         cart_dist =  norm(diff);
@@ -318,7 +295,7 @@ classdef RRT < handle
      
                         if cart_dist <= 0.4
                             obj.status = 'reached';
-                            'trovato'
+                            obj.lastNode = x_new;
                             break
                         end
                             
@@ -329,6 +306,7 @@ classdef RRT < handle
                     %leaves(obj.graph)
                     end
                 obj.status = 'timeRunOut';
+                
             end
         end
     end

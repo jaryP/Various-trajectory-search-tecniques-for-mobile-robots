@@ -12,9 +12,7 @@ classdef polygon
         
         
         function [xi, yi] = intersect(obj,x,y)
-            
-            %Matrix with colum [x y]'
-                        
+                                    
             [xp, yp] = polyxpoly(x,y,obj.x,obj.y, 'unique');
             xi = xp;
             yi = yp;
