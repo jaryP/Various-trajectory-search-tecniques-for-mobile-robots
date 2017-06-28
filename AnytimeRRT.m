@@ -20,11 +20,11 @@ classdef AnytimeRRT < handle
         function obj = AnytimeRRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,robot,goalBias,k,upper_bound)
             x_i = q_i(1);
             y_i = q_i(2);
-            teta_i = q_i(3);
+            %  teta_i = q_i(3);
             
             x_f = q_f(1);
             y_f = q_f(2);
-            teta_f = q_f(3);
+            % teta_f = q_f(3);
             
             obj.goalBias = goalBias;
             obj.k = k;
@@ -34,8 +34,8 @@ classdef AnytimeRRT < handle
             obj.costs = zeros(size(obj.nodes));
             
             if(x_i>=x_min)&&(y_i>=y_min)&&(x_i<=x_max)&&(y_f<=y_max)
-                obj.init_node = [x_i,y_i,teta_i];
-                obj.final_node = [x_f,y_f,teta_f];
+                obj.init_node = [x_i,y_i];
+                obj.final_node = [x_f,y_f];
                 
                 nodes = [obj.init_node];
                 obj.nodes = nodes;
@@ -62,6 +62,7 @@ classdef AnytimeRRT < handle
             end
         end
         
+        % controlla se la posizione q è all'interno di un ostacolo
         function flag = checkCollision(obj, q)
             for i=1:size(obj.obstacles)
                 if(~isempty(obj.obstacles(i).intersect(q(1),q(2))))
@@ -72,6 +73,8 @@ classdef AnytimeRRT < handle
             flag = false;
         end
         
+        % sceglie una posizione random nel free space che abbia un costo
+        % stimato minore dell'upper bound
         function qtarget = chooseTarget(obj)
             if rand >= obj.goalBias
                 qtarget = obj.final_node;
@@ -91,7 +94,7 @@ classdef AnytimeRRT < handle
             qtarget = -1;
         end
         
-        function cost = selCost(obj,q,qtarget)    
+        function cost = selCost(obj,q,qtarget)
             path = shortestpath(obj.graph,1,obj.findId(q));
             c = size(path,2);
             cost = obj.distance_bias*norm(q(1,1:2)-qtarget(1,1:2))+obj.cost_bias*c;
@@ -107,21 +110,21 @@ classdef AnytimeRRT < handle
             inters = [x(1),y(1);x(2),y(2)];
         end
         
-        function newNode = generateExtension(obj,qact,qgoal) %qui suppongo qact e qgoal siano colonne    
+        function newNode = generateExtension(obj,qact,qgoal) %qui suppongo qact e qgoal siano colonne
             intersections = obj.solveIntersection(qact(1),qgoal(1),qact(2),qgoal(2),qact(1),qact(2),obj.robot.v);
             point_a = intersections(1,:)';
             point_b = intersections(2,:)';
-     
+            
             if(norm(point_a-qgoal(1:2))<norm(point_b-qgoal(1:2)))
-                newNode = [double(intersections(1,:)),0]';
+                newNode = [double(intersections(1,:))]';
                 return
             else
-                newNode = [double(intersections(2,:)),0]';
+                newNode = [double(intersections(2,:))]';
                 return
             end
         end
         
-        function obj = addNewNode(obj,qnew,newcost,qnext) 
+        function obj = addNewNode(obj,qnew,newcost,qnext)
             if(size(qnew,1)>1)
                 qnew = qnew';
             end
@@ -152,26 +155,26 @@ classdef AnytimeRRT < handle
                 distance = norm(obj.nodes(i,1:2)-qtarget(1,1:2));
                 ordered = [ordered;obj.nodes(i,:),distance];
             end
-            ordered = sortrows(ordered,4);
-            k = obj.k;
-            if(k>size(ordered,1))
-                k = size(ordered,1);
+            ordered = sortrows(ordered,3);
+            s = obj.k;
+            if(s>size(ordered,1))
+                s = size(ordered,1);
             end
             
-            Qnew = ordered(1:k,1:3);
+            Qnew = ordered(1:s,1:2);
             select = [];
             for i = 1:size(Qnew)
                 select = [select; Qnew(i,:),obj.selCost(Qnew(i,:),qtarget)];
             end
             
-            select = sortrows(select,4);
+            select = sortrows(select,3);
             
             while(~isempty(select))
-                qtree = select(1,1:3);
+                qtree = select(1,1:2);
                 select(1,:) = [];
                 q_new = obj.generateExtension(qtree',qtarget');
                 q_new = q_new';
-                path = shortestpath(obj.graph,1,obj.findId(qtree)); % numero di archi tra l'origine e qtree 
+                path = shortestpath(obj.graph,1,obj.findId(qtree)); % numero di archi tra l'origine e qtree
                 cost_start_tree = size(path,2);
                 tempcost = cost_start_tree+(norm(qtree(1,1:2)-q_new(1,1:2))/obj.robot.v); % costo dall'origine a qtree + numero di passi da qtree a qnew
                 
@@ -182,7 +185,7 @@ classdef AnytimeRRT < handle
                     X = [qnew,cost_qnew,qnear];
                     
                     return
-             
+                    
                 end
                 
             end
@@ -214,11 +217,10 @@ classdef AnytimeRRT < handle
                 
                 if(q_target ~= -1)
                     new = obj.extendToTarget(q_target);
-                    
                     if(new~=-1)
-                        q_new = new(1,1:3);
-                        q_new_cost = new(1,4);
-                        q_near = new(1,5:7);
+                        q_new = new(1,1:2);
+                        q_new_cost = new(1,3);
+                        q_near = new(1,4:5);
                         [x,y] = obj.getMovement(q_near,q_new);
                         if obj.obstacleFree(x,y)
                             obj.addNewNode(q_new,q_new_cost,q_near);
@@ -228,8 +230,7 @@ classdef AnytimeRRT < handle
                 end
                 time = time + 1;
                 if(time>max_time)
-                    s = sprintf('tempo scaduto');
-                    disp(s)
+                    obj.status = 'out of time';
                     return
                 else
                     %CONTROLLA CHE ABBIA SENSO
@@ -246,86 +247,15 @@ classdef AnytimeRRT < handle
             end
         end
         
-         function [x,y] = getMovement(obj,startConfig, endConfig)
-   
-            angleDiff = wrapToPi(endConfig(3)-startConfig(3));
-
-            if angleDiff == 0
-                x = [startConfig(1)  endConfig(1)];
-                y = [startConfig(2)  endConfig(2)];
-                return
-            end
-            
-            th = 0:pi/50:pi/2;  
-            
-            if abs(wrapToPi(startConfig(3))) == 0 
-                xC = startConfig(1);
-                yC = endConfig(2);
-                diff = endConfig-[xC ; yC; 0];
-                diff = diff(1:2);
-                diff = norm(diff);
-                
-                if angleDiff >0
-                    x = diff*cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-                else
-                    x = diff*cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                    
-                end   
-
-            elseif abs(wrapToPi(startConfig(3))) == pi 
-                xC = startConfig(1);
-                yC = endConfig(2);
-                diff = endConfig-[xC ; yC; 0];
-                diff = diff(1:2);
-                diff = norm(diff);
-                
-                if angleDiff >0
-                    x = diff*-cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                else
-                    x = diff*-cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-
-                end
-            elseif wrapToPi(startConfig(3)) == pi/2
-            %%DA FARE DEBUG
-                    xC = endConfig(1);
-                    yC = startConfig(2);
-                    diff = endConfig-[xC ; yC; 0];
-                    diff = diff(1:2);
-                    diff = norm(diff);
-                 if angleDiff > 0
-                    x = diff*cos(th) + xC;
-                    y = diff*sin(th)+yC ;
-                 else
-                    x = diff*-cos(th) + xC;
-                    y = diff*sin(th)+yC ;  
-                 end
-                 
-            elseif wrapToPi(startConfig(3)) == -pi/2
-                    xC = endConfig(1);
-                    yC = startConfig(2);
-                    diff = endConfig-[xC ; yC; 0];
-                    diff = diff(1:2);
-                    diff = norm(diff);
-                 if angleDiff > 0
-                    x = diff*-cos(th) + xC;
-                    y = diff*-sin(th)+yC ;
-                 else
-                    x = diff*cos(th) + xC;
-                    y = diff*-sin(th)+yC ; 
-                 end
-            end
-            
-          
-        end  
+        function [x,y] = getMovement(~,startConfig, endConfig)
+            x = [startConfig(1)  endConfig(1)];
+            y = [startConfig(2)  endConfig(2)];
+            return
+        end
+        
         function [] = run(obj)
             actual_cost = obj.growRRT();
             if(actual_cost~= -1)
-                S = sprintf('finito');
-                disp(S);
                 obj.upper_bound = (1-0.1)*actual_cost;
                 obj.distance_bias = obj.distance_bias - 0.1;
                 if(obj.distance_bias<0)
@@ -338,14 +268,62 @@ classdef AnytimeRRT < handle
             end
         end
         
-        function obj = plot(obj)
+        function obj = plot(obj,rrt)
             hold on
-            for i=1:size(obj.nodes,1)
-                e = obj.nodes(i,1:2)';
-                x = e(1);
-                y = e(2);
-                plot(x,y,'*');
+          
+           X = [];
+           Y = [];
+            if strcmp(rrt.status,'reached')
+              [~, pathR, ~] = graphshortestpath(adjacency(rrt.graph), 1, size(rrt.nodes,1));
+                for k=2:size(pathR,2)
+                    qpred = rrt.nodes(pathR(k-1),:)';
+                    qactual = rrt.nodes(pathR(k),:)';
+                    [x,y] = getMovement(rrt,qpred,qactual);
+                    X = [X;x'];
+                    Y = [Y;y'];
+                 end
+                plot(X,Y,'r','DisplayName','RRT');
+              %  text(X(1),Y(1),'costo');
             end
+            
+            
+            X = [];
+          	Y = [];
+            
+            if strcmp(obj.status,'out of time')
+%                 [i,j,~] = find(adjacency(obj.graph));
+%                 for m=1:size(i)
+%                     [x,y] = getMovement(obj,obj.nodes(i(m),:)',obj.nodes(j(m),:)');
+%                     X = [X;x'];
+%                     Y = [Y;y'];
+%                 end
+%              plot(X,Y,'k','DisplayName','AnytimeRRT');
+          % text(X(size(X)),Y(size(Y)),'testo','Color','red');
+            else
+                [~, path, ~] = graphshortestpath(adjacency(obj.graph), 1, size(obj.nodes,1));
+                for m=2:size(path,2)
+                    qpred = obj.nodes(path(m-1),:)';
+                    qactual = obj.nodes(path(m),:)';
+                    [x,y] = getMovement(obj,qpred,qactual);
+                    X = [X;x'];
+                    Y = [Y;y'];
+                end
+             plot(X,Y,'k','DisplayName','AnytimeRRT');
+            % text(X(size(X)),Y(size(Y)),'testo','Color','red');
+            end
+            
+            legend('show');
+            th = 0:pi/50:2*pi;
+            xunit = 0.4 * cos(th) + obj.final_node(1);
+            yunit = 0.4 * sin(th) + obj.final_node(2);
+            plot(xunit, yunit);
+
+            for o=obj.obstacles
+                plot(o.x,o.y,'b')
+            end
+            
+            plot(obj.init_node(1,1),obj.init_node(1,2),'b^');
+            plot(obj.final_node(1,1),obj.final_node(1,2),'b^');   
         end
     end
 end
