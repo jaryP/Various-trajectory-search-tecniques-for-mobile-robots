@@ -62,6 +62,7 @@ classdef RRT < handle
             if strcmp(obj.status,'reached')
                 
                 [dist, path, pred] = graphshortestpath(adjacency(obj.graph), 1, size(obj.nodes,1));
+                
                 for k=2:size(path,2)
                     qpred = obj.nodes(path(k-1),:)';
                     qactual = obj.nodes(path(k),:)';
