@@ -1,0 +1,33 @@
+mediaRRT500 =
+
+    9.2734
+
+
+mediaRRT1000 =
+
+    9.2734
+
+
+mediaRRT2000 =
+
+    9.2734
+
+
+mediaRRT4000 =
+
+    9.2734
+
+
+mediaRRT6000 =
+
+    9.2734
+
+
+mediaRRT8000 =
+
+    9.2734
+
+
+mediaRRT10000 =
+
+    9.2734
