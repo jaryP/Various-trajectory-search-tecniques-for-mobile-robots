@@ -38,6 +38,7 @@ upper_bound = size(path,2);
 arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound);
 actual_cost = arrt.growRRT();
 
+paths = [];
 for i=1:5
     arrt.upper_bound = (1-0.1)*actual_cost;
     arrt.distance_bias = arrt.distance_bias - 0.1;
@@ -90,6 +91,9 @@ for i=1:5
 
         legend([h(1),h(2)],{'RRT','AnytimeRRT'});
         print(strcat(filename,'_final'),'-djpeg');
+        
+        
+        %unisci tutti gli anytime
         break
     end
 
