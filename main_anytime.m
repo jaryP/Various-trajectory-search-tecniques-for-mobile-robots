@@ -1,4 +1,8 @@
 close
+
+iterations = [1 2 5];
+for l=1:size(iterations,2)
+    
 rng('default');
 rng(1);
 init_conf = [0,0];
@@ -35,7 +39,10 @@ if(strcmp(rrt.status,'reached')==1)
 [~, path, ~] = graphshortestpath(adjacency(rrt.graph), 1, size(rrt.nodes,1));
 upper_bound = size(path,2);
 
-arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound);
+
+
+
+arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound,l*1000);
 actual_cost = arrt.growRRT();
 
 for i=1:5
@@ -57,41 +64,10 @@ for i=1:5
         arrt.graph = G;
         actual_cost = arrt.growRRT();
     else
-        last_index = i-1;
-        filename = strcat('Images\Anytime_',num2str(last_index));
-        openfig(filename);
-
-        th = 0:pi/50:2*pi;
-        xunit = 0.4 * cos(th) + arrt.final_node(1);
-        yunit = 0.4 * sin(th) + arrt.final_node(2);
-        plot(xunit, yunit);
-
-
-        for o=arrt.obstacles
-            fill(o.x,o.y,[0.64,0.77,1])
-        end
-
-        plot(arrt.init_node(1,1),arrt.init_node(1,2),'b^');
-        plot(arrt.final_node(1,1),arrt.final_node(1,2),'b^');
-
-        [~, pathR, ~] = graphshortestpath(adjacency(rrt.graph), 1, size(rrt.nodes,1));
-        X = [];
-        Y = [];
-        for m=2:size(pathR,2)
-            qpred = rrt.nodes(pathR(m-1),:)';
-            qactual = rrt.nodes(path(m),:)';
-            [x,y] = rrt.getMovement(qpred,qactual);
-            X = [X;x'];
-            Y = [Y;y'];
-        end
-      
-        plot(X,Y,'Color',[0.02,0.65,0.8],'LineWidth',0.75);
-        h = findobj(gca,'LineWidth',0.75,'-or','LineWidth',0.9);
-
-        legend([h(1),h(2)],{'RRT','AnytimeRRT'});
-        print(strcat(filename,'_final'),'-djpeg');
+        arrt.finalPlot(i-1,rrt);
         break
     end
 
+end
 end
 end

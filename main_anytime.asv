@@ -1,4 +1,8 @@
 close
+
+iterations = [1 2 5];
+for l=1:size(iterations,2)
+    
 rng('default');
 rng(1);
 init_conf = [0,0];
@@ -35,10 +39,12 @@ if(strcmp(rrt.status,'reached')==1)
 [~, path, ~] = graphshortestpath(adjacency(rrt.graph), 1, size(rrt.nodes,1));
 upper_bound = size(path,2);
 
-arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound);
+
+
+
+arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound,l*1000);
 actual_cost = arrt.growRRT();
 
-paths = [];
 for i=1:5
     arrt.upper_bound = (1-0.1)*actual_cost;
     arrt.distance_bias = arrt.distance_bias - 0.1;
@@ -59,7 +65,7 @@ for i=1:5
         actual_cost = arrt.growRRT();
     else
         last_index = i-1;
-        filename = strcat('Images\Anytime_',num2str(last_index));
+        filename = strcat('Images\Anytime_',num2str(arrt.max_time),'__',num2str(last_index));
         openfig(filename);
 
         th = 0:pi/50:2*pi;
@@ -92,10 +98,28 @@ for i=1:5
         legend([h(1),h(2)],{'RRT','AnytimeRRT'});
         print(strcat(filename,'_final'),'-djpeg');
         
-        
-        %unisci tutti gli anytime
+        close all
+        figure(i+1);
+        arrt.plotIncompletePath();
+        hold on
+        th = 0:pi/50:2*pi;
+        xunit = 0.4 * cos(th) + arrt.final_node(1);
+        yunit = 0.4 * sin(th) + arrt.final_node(2);
+        plot(xunit, yunit);
+
+
+        for o=arrt.obstacles
+            fill(o.x,o.y,[0.64,0.77,1])
+        end
+
+        plot(arrt.init_node(1,1),arrt.init_node(1,2),'b^');
+        plot(arrt.final_node(1,1),arrt.final_node(1,2),'b^');
+        axis([arrt.boundaries(1,1),arrt.boundaries(1,2),arrt.boundaries(2,1),arrt.boundaries(2,2)]);
+        filename = strcat('Images\Anytime_',num2str(arrt.max_time),'__',num2str(i),'_failed'); 
+        print(filename,'-djpeg');
         break
     end
 
+end
 end
 end
