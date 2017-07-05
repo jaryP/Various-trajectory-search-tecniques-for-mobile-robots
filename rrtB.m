@@ -7,13 +7,13 @@ classdef rrtB < generalRrt
             obj@generalRrt(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,costAreas, goalBias);   
         end
         
-        function core(obj,maxNodes)
+        function core(obj,maxIteration)
 
-            nodeCount = 0;
-            while(nodeCount < maxNodes)
+            iteration = 0;
+            while(iteration < maxIteration)
    
                     x_rand = obj.sampleFree();
-                    nodeCount = nodeCount + 1;
+                    iteration = iteration + 1
 
                     if(~isempty(x_rand))
                         

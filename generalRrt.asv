@@ -137,9 +137,6 @@ methods
                 dist = obj.nodeDist(goal);
                 return
             end
-            
-            xparent = predecessors(obj.graph,goal);
-            obj.nodeDist
             nn = numnodes(obj.graph);
             [s,t] = findedge(obj.graph);
             A = sparse(s,t,obj.graph.Edges.Weight,nn,nn);   

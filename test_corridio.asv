@@ -11,11 +11,10 @@ obj1_x = [-1 0 0 -1 -1]
 obj1_y = [0 0 1 1 0 ];
 obj2_x = [0.5 0 0 0.5 0.5 ];
 obj2_y = [0 0 1 1 0 ];
-rng(42)
 
-x_min = -2;
+x_min = -3;
 y_min = -5;
-x_max = 2;
+x_max = 3;
 y_max = 5;
 
 area = [];
@@ -27,8 +26,8 @@ for i=1:20
     else
         c = 2.0
     end
-    obj1_x = [xr xr+0.5 xr+0.5 xr xr];
-    obj1_y = [yr yr yr+0.5 yr+0.5 yr ];
+    obj1_x = [xr xr+1 xr+1 xr xr];
+    obj1_y = [yr-1 yr-1 yr yr yr-1 ];
 
     area = [area, costArea(obj1_x,obj1_y,c)];
         
@@ -39,7 +38,7 @@ init_conf = [0,-4];
 final_conf = [0,4.5];
 rng('default');
 
-rng(17)
+rng(42)
 
 
 iterations = 15000;
@@ -58,7 +57,7 @@ for i=1:5
     'iterazione'
     i
     rrt = rrtStar(init_conf,final_conf,x_min, x_max,y_min,y_max,[],area,0.7);
-    rrt.core(100);
+    rrt.core(10);
     [d,~]= rrt.getEndPath();
     mediaStar500 = mediaStar500 + d;
 %     
@@ -107,7 +106,7 @@ mediaStar8000 = mediaStar8000/5
 mediaStar10000 = mediaStar10000/5
 
 
-rng(17);
+rng(42);
 
 
 mediaRRT500 = 0;
