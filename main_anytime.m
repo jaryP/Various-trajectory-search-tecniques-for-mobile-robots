@@ -36,15 +36,10 @@ rng(1);
 
 if(strcmp(rrt.status,'reached')==1)
 
-[~, path, ~] = graphshortestpath(adjacency(rrt.graph), 1, size(rrt.nodes,1));
-upper_bound = size(path,2);
-
-
-
-
+[path, upper_bound] = shortestpath(rrt.graph,1, size(rrt.nodes,1));
 arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound,l*1000);
 actual_cost = arrt.growRRT();
-
+costi = [];
 for i=1:5
     arrt.upper_bound = (1-0.1)*actual_cost;
     arrt.distance_bias = arrt.distance_bias - 0.1;
@@ -55,7 +50,8 @@ for i=1:5
     if(arrt.cost_bias>1)
         arrt.cost_bias = 1;
     end
-    if(strcmp(arrt.status,'reached')==1)
+    costi = [costi;actual_cost];
+    if(actual_cost~=-1)
         arrt.plot(i);
         arrt.nodes = [arrt.init_node];
         arrt.upper_bound = actual_cost;
@@ -64,10 +60,10 @@ for i=1:5
         arrt.graph = G;
         actual_cost = arrt.growRRT();
     else
-        arrt.finalPlot(i-1,rrt);
-        break
+        arrt.finalPlot(i-1,rrt,costi(size(costi,1)-1));
+    break
     end
+end
+end
+end
 
-end
-end
-end
