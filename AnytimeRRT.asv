@@ -164,12 +164,13 @@ classdef AnytimeRRT < handle
             end
         end
         
-        %returns qnew from the random position, checking costs
+        %returns qnew from the random position and
         function X = extendToTarget(obj,qtarget)
             ordered = [];
             for i=1:size(obj.nodes)
                 distance = norm(obj.nodes(i,1:2)-qtarget(1,1:2));
-                ordered = [ordered;obj.nodes(i,:),distance];
+                
+               ordered = [ordered;obj.nodes(i,:),distance];
             end
             ordered = sortrows(ordered,3);
             s = obj.k;
@@ -206,7 +207,6 @@ classdef AnytimeRRT < handle
             return
         end
         
-        %auxiliary method: checks for collisions
         function collisionFlag = obstacleFree(obj,x,y)
             collisionFlag = 0;
             for i=obj.obstacles
@@ -219,7 +219,6 @@ classdef AnytimeRRT < handle
             collisionFlag  = ~collisionFlag;
         end
         
-        %principal method, that builds the tree
         function cost = growRRT(obj)
             q_new = obj.init_node';
             q_goal = obj.final_node';
@@ -262,14 +261,12 @@ classdef AnytimeRRT < handle
             obj.status = 'reached';
         end
         
-        %returns coordinates of movement between two nodes
         function [x,y] = getMovement(~,startConfig, endConfig)
             x = [startConfig(1)  endConfig(1)];
             y = [startConfig(2)  endConfig(2)];
             return
         end
         
-        %runs the needed methods
         function [] = run(obj)
             actual_cost = obj.growRRT();
             if(actual_cost~= -1)
@@ -285,7 +282,6 @@ classdef AnytimeRRT < handle
             end
         end
         
-        %plot the tree and the path
         function obj = plot(obj,i)
             figure(i);
             hold on
@@ -317,7 +313,6 @@ classdef AnytimeRRT < handle
             savefig(filename);
         end
         
-        %plot a failed run
         function [] = plotIncompletePath(obj)
             [row,column] = find(adjacency(obj.graph));
             for s = 1:size(row)
@@ -328,9 +323,6 @@ classdef AnytimeRRT < handle
                 line(X,Y,'Color',[0.18,0.2,0.2]);
             end
         end
-        
-        %plots only the last run of anytime (the better one) over the rrt
-        %run, to an easy comparison
         function [] = finalPlot(obj,last_index,rrt,cost)
             filename = strcat('Images\Anytime_',num2str(obj.max_time),'__',num2str(last_index));
             openfig(filename);
