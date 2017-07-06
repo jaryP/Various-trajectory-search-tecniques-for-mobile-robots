@@ -11,12 +11,13 @@ classdef RRT < handle
         maxIteration
         goalBias
         lastNode
+        delta
     end
     
     methods
         %costruttore. Parametri: configurazioni iniziale e finale del
         %robot, limiti del configuration space, array di ostacoli, robot
-        function obj = RRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,robot,maxIteration, goalBias)
+        function obj = RRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,maxIteration, goalBias)
             
             x_i = q_i(1);
             y_i = q_i(2);
@@ -39,8 +40,7 @@ classdef RRT < handle
                 obj.graph = G;
                 obj.boundaries = [x_min, x_max; y_min, y_max];
                 obj.obstacles = obstacles;
-                obj.robot = robot;
-                
+                obj.delta = 0.2;
             else
                 error('position out of bounds');
             end
@@ -97,8 +97,10 @@ classdef RRT < handle
             counter = 0;
             
             while(counter<1000)
-                W = obj.robot.getRandomConfig(obj.boundaries(1,:),obj.boundaries(2,:));
-                for o=obj.obstacles
+               x = rand * (obj.init_node(1,1) - obj.final_node(1,1)) + obj.final_node(1,1);
+               y = rand * (obj.boundaries(2,1) - obj.boundaries(2,2)) + obj.boundaries(2,2);
+               W = [x, y];
+               for o=obj.obstacles
                     if(~isempty(o.intersect(W(1),W(2))))
                         counter = counter +1;
                     else
@@ -164,7 +166,7 @@ classdef RRT < handle
         end
         
         function newNode = steer(obj,qgoal,qact)
-            intersections = obj.solveIntersection(qact(1),qgoal(1),qact(2),qgoal(2),qact(1),qact(2),obj.robot.v);
+            intersections = obj.solveIntersection(qact(1),qgoal(1),qact(2),qgoal(2),qact(1),qact(2),obj.delta);
             point_a = intersections(1,:)';
             point_b = intersections(2,:)';
             

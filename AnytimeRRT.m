@@ -19,7 +19,7 @@ classdef AnytimeRRT < handle
     
     methods
         %constructor
-        function obj = AnytimeRRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,delta,goalBias,k,upper_bound,max_time)
+        function obj = AnytimeRRT(q_i,q_f,x_min,x_max,y_min,y_max,obstacles,goalBias,k,upper_bound,max_time)
             x_i = q_i(1);
             y_i = q_i(2);
             
@@ -45,7 +45,7 @@ classdef AnytimeRRT < handle
                 obj.graph = G;
                 obj.boundaries = [x_min, x_max; y_min, y_max];
                 obj.obstacles = obstacles;
-                obj.delta = delta;
+                obj.delta = 0.2;
                 obj.costs = 0;
                 
             else

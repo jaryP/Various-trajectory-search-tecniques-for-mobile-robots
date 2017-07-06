@@ -8,7 +8,6 @@ x_min = -5;
 y_min = -5;
 x_max = 5;
 y_max = 5;
-robot = pointRobot;
 
 obst1_x = [-2.5 -1 -1 -2.5 -2.5];
 obst1_y = [1 2 3 3 1];
@@ -25,8 +24,8 @@ obstacle = [polygon(obst1_x,obst1_y),polygon(obst2_x,obst2_y), polygon(obst3_x,o
 goalBias = 0.6;
 k = 3;
 
-max_nodes_rrt = 5000;
-rrt = RRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,max_nodes_rrt,goalBias);
+max_nodes_rrt = 2000;
+rrt = RRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,max_nodes_rrt,goalBias);
 rrt.run();
 
 rng(1);
@@ -35,7 +34,7 @@ step = 0.2;
 if(strcmp(rrt.status,'reached')==1)
 
 [path, upper_bound] = shortestpath(rrt.graph,1, size(rrt.nodes,1));
-arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,step,goalBias,k,upper_bound,max_nodes_anytime);
+arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,goalBias,k,upper_bound,max_nodes_anytime);
 actual_cost = arrt.growRRT();
 costi = [];
 flag = false;
