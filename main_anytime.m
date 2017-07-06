@@ -1,7 +1,4 @@
 close
-
-iterations = [1 2 5];
-for l=1:size(iterations,2)
     
 rng('default');
 rng(1);
@@ -37,9 +34,10 @@ rng(1);
 if(strcmp(rrt.status,'reached')==1)
 
 [path, upper_bound] = shortestpath(rrt.graph,1, size(rrt.nodes,1));
-arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound,l*1000);
+arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,robot,goalBias,k,upper_bound,5000);
 actual_cost = arrt.growRRT();
 costi = [];
+flag = false;
 for i=1:5
     arrt.upper_bound = (1-0.1)*actual_cost;
     arrt.distance_bias = arrt.distance_bias - 0.1;
@@ -60,10 +58,12 @@ for i=1:5
         arrt.graph = G;
         actual_cost = arrt.growRRT();
     else
+        flag = true;
         arrt.finalPlot(i-1,rrt,costi(size(costi,1)-1));
     break
     end
 end
+if(flag ==0)
+  arrt.finalPlot(i-1,rrt,costi(size(costi,1)-1));  
 end
 end
-
