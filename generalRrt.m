@@ -15,7 +15,7 @@ properties
         lastNode
         nodeDist = [0]
         toleranceRadius = 0.2
-        eta = 0.1
+        eta = 0.5
         nearToFinalNodes = []
 end
 

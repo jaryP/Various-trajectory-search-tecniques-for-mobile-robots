@@ -7,11 +7,12 @@ obj2_x = [5 1 1 5 5 ];
 obj2_y = [5 5  -5 -5 5];
 obstacles =[polygon(obj1_x,obj1_y),polygon(obj2_x,obj2_y)];
 
-obj1_x = [-1 0 0 -1 -1]
+obj1_x = [-1 0 0 -1 -1];
 obj1_y = [0 0 1 1 0 ];
 obj2_x = [0.5 0 0 0.5 0.5 ];
 obj2_y = [0 0 1 1 0 ];
-rng(42)
+
+rng(728)
 
 x_min = -2;
 y_min = -5;
@@ -22,13 +23,13 @@ area = [];
 for i=1:20
     xr = rand*(x_max - x_min) +x_min;
     yr = rand*(y_max - y_min) +y_min;
-    if rand < 0.5
-        c = 0.5
+    if rand <= 0.5
+        c = 0.5;
     else
-        c = 2.0
+        c = 2.0;
     end
-    obj1_x = [xr xr+0.5 xr+0.5 xr xr];
-    obj1_y = [yr yr yr+0.5 yr+0.5 yr ];
+    obj1_x = [xr-0.5 xr+0.5 xr+0.5 xr-0.5 xr-0.5];
+    obj1_y = [yr-0.5 yr-0.5 yr+0.5 yr+0.5 yr-0.5 ];
 
     area = [area, costArea(obj1_x,obj1_y,c)];
         
@@ -43,16 +44,6 @@ rng(17)
 
 
 iterations = 15000;
-
-mediaStar500 = 0;
-mediaStar1000 = 0;
-mediaStar2000 = 0;
-mediaStar4000 = 0;
-mediaStar6000 = 0;
-mediaStar8000 = 0;
-mediaStar10000 = 0;
-mediaStar12000 = 0;
-mediaStar15000 = 0;
 
 for i=1:5
     'iterazione'
