@@ -40,7 +40,7 @@ classdef RRT < handle
                 obj.graph = G;
                 obj.boundaries = [x_min, x_max; y_min, y_max];
                 obj.obstacles = obstacles;
-                obj.delta = 0.2;
+                obj.delta = 0.5;
             else
                 error('position out of bounds');
             end
@@ -50,8 +50,8 @@ classdef RRT < handle
             hold on
             
             th = 0:pi/50:2*pi;
-            xunit = 0.4 * cos(th) + obj.final_node(1);
-            yunit = 0.4 * sin(th) + obj.final_node(2);
+            xunit = 0.2 * cos(th) + obj.final_node(1);
+            yunit = 0.2 * sin(th) + obj.final_node(2);
             plot(xunit, yunit);
             
             for o=obj.obstacles
@@ -88,7 +88,6 @@ classdef RRT < handle
         % estrae una configurazione casuale, non in collisione con gli
         % ostacoli
         function W = sampleFree(obj)
-            
             if rand >= obj.goalBias
                 W = obj.final_node;
                 return
@@ -100,10 +99,14 @@ classdef RRT < handle
                x = rand * (obj.init_node(1,1) - obj.final_node(1,1)) + obj.final_node(1,1);
                y = rand * (obj.boundaries(2,1) - obj.boundaries(2,2)) + obj.boundaries(2,2);
                W = [x, y];
+               if (isempty(obj.obstacles))
+                   return;
+               end
                for o=obj.obstacles
                     if(~isempty(o.intersect(W(1),W(2))))
                         counter = counter +1;
                     else
+                        
                         return;
                     end
                 end
@@ -182,14 +185,12 @@ classdef RRT < handle
         
         function [] = run(obj)
             x_start = obj.init_node;
-            
             x_end = obj.final_node;
             
             if(all(x_start == x_end))
                 obj.nodes
             else
                 for i=1:obj.maxIteration
-                    
                     x_rand = obj.sampleFree();
                     if(~isempty(x_rand))
                         

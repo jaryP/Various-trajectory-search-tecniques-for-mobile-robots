@@ -1,44 +1,36 @@
 close
-
 rng('default');
 rng(1);
+
 init_conf = [0,0];
-final_conf = [4.5,0];
-x_min = -5;
-y_min = -5;
-x_max = 5;
-y_max = 5;
+final_conf = [2.5,-2.5];
 
-obst1_x = [-2.5 -1 -1 -2.5 -2.5];
-obst1_y = [1 2 3 3 1];
+x_min = -3;
+y_min = -3;
+x_max = 3;
+y_max = 3;
 
-obst2_x = [1 2 2 1 1];
-obst2_y = [1 0 4 1 1];
 
-obst3_x = [3 4 4 3 3 ];
-obst3_y = [-4 -4  1 1 -4];
 
 axis([x_min x_max y_min y_max]);
 
 
-
-obstacle = [polygon(obst1_x,obst1_y),polygon(obst2_x,obst2_y), polygon(obst3_x,obst3_y)];
 goalBias = 0.6;
 k = 3;
 
 max_nodes_rrt = 1000;
-rrt = RRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,max_nodes_rrt,goalBias);
+rrt = RRT(init_conf,final_conf,x_min,x_max,y_min,y_max,[],max_nodes_rrt,goalBias);
 rrt.run();
 
 rng(1);
-max_nodes_anytime = 500;
+max_nodes_anytime = 1000;
 
 if(strcmp(rrt.status,'reached')==1)
     
     [path, upper_bound] = shortestpath(rrt.graph,1, size(rrt.nodes,1));
     upper_bound = upper_bound*rrt.delta;
     
-    arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,obstacle,goalBias,k,upper_bound,max_nodes_anytime);
+    arrt = AnytimeRRT(init_conf,final_conf,x_min,x_max,y_min,y_max,[],goalBias,k,upper_bound,max_nodes_anytime);
     actual_cost = arrt.growRRT();
     costi = upper_bound;
     flag = false;
@@ -82,7 +74,7 @@ if(strcmp(rrt.status,'reached')==1)
         end
         
     end
-    if(flag ==0)
+    if(flag == 0)
         arrt.finalPlot(i,rrt,costi(size(costi,1)));
     end
 end

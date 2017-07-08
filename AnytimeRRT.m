@@ -82,13 +82,14 @@ classdef AnytimeRRT < handle
             end
             
             counter = 0;
-            while(counter < 100)
-               x = rand * (obj.init_node(1,1) - obj.final_node(1,1)) + obj.final_node(1,1);
-               y = rand * (obj.boundaries(2,1) - obj.boundaries(2,2)) + obj.boundaries(2,2);
+            while(counter < 500)
+                x = rand * (obj.boundaries(1,1) -obj.boundaries(1,2)) + obj.boundaries(1,2);
+                y = rand * (obj.boundaries(2,1) -obj.boundaries(2,2)) + obj.boundaries(2,2);
+
                W = [x, y];
                 
-                
-                if(floor(norm(obj.init_node(1,1:2)-W(1:2))+norm(W(1:2)-obj.final_node(1,1:2)))>obj.upper_bound||obj.checkCollision(W))
+
+                if(floor(norm(obj.init_node-W)+norm(W-obj.final_node))>obj.upper_bound||obj.checkCollision(W))
                     counter = counter + 1;
                 else
                     qtarget = W;
@@ -336,8 +337,8 @@ classdef AnytimeRRT < handle
             openfig(filename);
             
             th = 0:pi/50:2*pi;
-            xunit = 0.4 * cos(th) + obj.final_node(1);
-            yunit = 0.4 * sin(th) + obj.final_node(2);
+            xunit = 0.2 * cos(th) + obj.final_node(1);
+            yunit = 0.2 * sin(th) + obj.final_node(2);
             plot(xunit, yunit);
             
             
@@ -371,8 +372,8 @@ classdef AnytimeRRT < handle
             obj.plotIncompletePath();
             hold on
             th = 0:pi/50:2*pi;
-            xunit = 0.4 * cos(th) + obj.final_node(1);
-            yunit = 0.4 * sin(th) + obj.final_node(2);
+            xunit = 0.2 * cos(th) + obj.final_node(1);
+            yunit = 0. * sin(th) + obj.final_node(2);
             plot(xunit, yunit);
             
             
