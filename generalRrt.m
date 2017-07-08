@@ -85,12 +85,12 @@ methods
                 th = 0:pi/50:2*pi;
                 xunit = obj.toleranceRadius* cos(th) + obj.final_node(1);
                 yunit = obj.toleranceRadius * sin(th) + obj.final_node(2);
-                plot(xunit, yunit);
+                plot(xunit, yunit,'LineWidth',1.5);
                 for k=2:size(path,2)
                     qpred = obj.nodes(path(k-1),:)';
                     qactual = obj.nodes(path(k),:)';
                     [x,y] = getMovement(obj,qpred,qactual);
-                    plot(x,y,'r');    
+                    plot(x,y,'r','LineWidth',2);    
                 end
             end
             

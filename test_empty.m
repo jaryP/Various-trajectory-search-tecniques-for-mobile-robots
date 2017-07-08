@@ -18,25 +18,25 @@ rrt = rrtStar(init_conf,final_conf,x_min, x_max,y_min,y_max,[],[],1.1);
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/empty_250_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/empty_RTTS_250_dist_',num2str(d),'.png')]);close all;
 
 '500'
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/empty_500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/empty_RTTS_500_dist_',num2str(d),'.png')]);close all;
 
 '2500'
 rrt.core(2000);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/empty_2500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/empty_RTTS_2500_dist_',num2str(d),'.png')]);close all;
 
 '5000'
 rrt.core(2500);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/empty_5000_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/empty_RTTS_5000_dist_',num2str(d),'.png')]);close all;
 
 
 'RRT'
@@ -47,24 +47,24 @@ rrt = rrtB(init_conf,final_conf,x_min, x_max,y_min,y_max,[],[],1.1);
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/empty_250_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/empty_RTT_250_dist_',num2str(d),'.png')]);close all;
 
 '500'
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/empty_500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/empty_RTT_500_dist_',num2str(d),'.png')]);close all;
 
 '2500'
 rrt.core(2000);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/empty_2500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/empty_RTT_2500_dist_',num2str(d),'.png')]);close all;
 
 '5000'
 rrt.core(2500);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/empty_5000_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/empty_RTT_5000_dist_',num2str(d),'.png')]);close all;
 
 

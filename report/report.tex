@@ -7,11 +7,20 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{listings}
-
+\usepackage{subcaption}
+%\captionsetup[subfigure]{font=scriptsize}
 \usepackage{placeins}
-\geometry{a4paper} 
+
+ \geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=10mm,
+	right=10mm,
+	top=20mm,
+}
 
 \vspace{2cm}
+
 \setlength{\parindent}{0cm}
 \setlength{\parindent}{1em}
 \title{A.M.R. Project report}
@@ -74,15 +83,17 @@
 	
 	The basic behaviour of this class of algorithms are the following one: at each iteration the algorithm  sample a new point in the free space. Then calculate the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacles, the new vertex and the edge, that connects the new point and the nearest one, are added to the graph. This is show in \textit{figure 1}.
 	
-	In this section we will see the existing algorithm that we have implemented and compared.
+		
+	The algorithms in this section are probabilistic complete. This means that, if a path exist from the initial vertex to the goal one, the probability that the algorithm fails to find that path asymptotically approaches zero with $n \rightarrow \inf$. 
+	
 	
 	\FloatBarrier
-	\begin{figure}
+	\begin{figure}[bht]
 		\centering
-		\includegraphics[width=\linewidth]{rrtExt.png}
+		\includegraphics[width=0.8\linewidth]{rrtExt.png}
 		\caption{The extending procedure}
 	\end{figure}
-	\FloatBarrier
+\FloatBarrier
 	\subsubsection{Rapidly-exploring Random Trees (RRT)}
 	
 	This is the simplest RRT algorithm. In this basic version, the algorithm does not take into account the distance of the path, if one is found, from the start vertex to the goal region. On the other it is very fast in exploring, randomly, the configuration space.
@@ -101,6 +112,8 @@ for i = 1$\dots$ n do
 		,x_{new}
 		)\}$
 	\end{lstlisting}
+	
+	One negative results tell us that the cost of the best path found by the RRT procedure converges to a random variable. This implies that the cost of the solution converges to a suboptimal value, with probability one. It is possible to implements different heuristic in order to improve the solution, but the the sub-optimality still. So this basic algorithm is probabilistic complete but not asymptotic optimal.
 	
 	\subsubsection{Anytime RRT}
 	
@@ -245,6 +258,149 @@ for i = 1$\dots$ n do
 	In this section we will explain the implementation and we'll show the results of the experiments.
 	\subsection{Implementation of the algorithm}
 	\subsection{Experiments}
+	
+	
+\begin{figure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{empty_250_dist_0}
+		\caption{RRT after 250 iterations}
+	\end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{empty_500_dist_0}
+		\caption{RRT after 500 iterations}
+	\end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{{empty_2500_dist_7.915}.png}
+		\caption{RRT after 2500 iterations}	
+	\end{minipage}
+\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{rrts_empty_250_dist_0}
+			\caption{RRT* after 250 iterations}
+		\end{minipage}
+	\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{rtts_empty_500_dist_0}
+			\caption{RRT* after 500 iterations}
+		\end{minipage}
+	\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\caption{RRT* after 2500 iterations}	
+		\end{minipage}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+			\begin{minipage}[b]{0.45\linewidth}
+				\includegraphics[width=\linewidth]{{empty_5000_dist_7.915}.png}
+				\caption{RRT after 5000 iterations}
+			\end{minipage}
+		\hfill
+			\begin{minipage}[b]{0.45\linewidth}
+				\includegraphics[width=\linewidth]{{rtts_empty_5000_dist_6.4041}.png}
+				\caption{RRTS* after 5000 iterations}
+			\end{minipage}
+	\end{subfigure}
+\caption{The configuration exploration differences between RRT and RRT* in an empty space, without goal bias.}
+\end{figure}
+
+
+\begin{figure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_RRT_5000_dist_6.3905}.png}
+			\caption{RRT}
+		\end{minipage}
+	\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_RRTS_5000_dist_6.1611}.png}
+			\caption{RRT*}
+		\end{minipage}
+	\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\caption{Anytime RRT}	
+		\end{minipage}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_2_RRT_5000_dist_21.0447}.png}
+			\caption{RRT}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_2_RRTS_5000_dist_15.0202}.png}
+			\caption{RRT*}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\caption{Anytime RRT}	
+		\end{minipage}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_1_RRT_5000_dist_13.7746}.png}
+			\caption{RRT}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.32\linewidth}
+			\includegraphics[width=\linewidth]{{OBJ_1_RRTS_5000_dist_11.1521}.png}
+			\caption{RRT*}
+		\end{minipage}
+			\hfill
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+		\caption{Anytime RRT}
+	\end{minipage}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+	\centering
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{{OBJ_3_RRT_5000_dist_17.4342}.png}
+		\caption{RRT}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{{OBJ_3_RRTS_5000_dist_12.2502}.png}
+		\caption{RRT*}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+		\caption{Anytime RRT}
+	\end{minipage}
+
+
+	\end{subfigure}
+	\caption{Some tests done in different obstacle environment}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{\textwidth}
+		\centering	
+
+		\begin{minipage}[b]{0.45\linewidth}
+			\includegraphics[width=\linewidth]{{corridoio_RTTS_5000_dist_6.339}.png}
+			\caption{Anytime RRT}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[b]{0.45\linewidth}
+			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\caption{RRT*}	
+		\end{minipage}
+	\end{subfigure}
+	\caption{Results in an environment contains non uniforms cost area}
+	
+\end{figure}
+\FloatBarrier
 	\section{Conclusion}
 \end{document}
 

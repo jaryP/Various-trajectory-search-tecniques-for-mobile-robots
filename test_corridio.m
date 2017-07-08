@@ -36,25 +36,25 @@ rrt = rrtStar(init_conf,final_conf,x_min, x_max,y_min,y_max,[],area,0.7);
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/corridoio_250_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/corridoio_RTTS_250_dist_',num2str(d),'.png')]);close all;
 
 '500'
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/corridoio_500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/corridoio_RTTS_500_dist_',num2str(d),'.png')]);close all;
 
 '2500'
 rrt.core(2000);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/corridoio_2500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/corridoio_RTTS_2500_dist_',num2str(d),'.png')]);close all;
 
 '5000'
 rrt.core(2500);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRTS/corridoio_5000_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRTS/corridoio_RTTS_5000_dist_',num2str(d),'.png')]);close all;
 
 
 'RRT'
@@ -65,24 +65,24 @@ rrt = rrtB(init_conf,final_conf,x_min, x_max,y_min,y_max,[],area,0.7);
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/corridoio_250_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/corridoio_RTT_250_dist_',num2str(d),'.png')]);close all;
 
 '500'
 rrt.core(250);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/corridoio_500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/corridoio_RTT_500_dist_',num2str(d),'.png')]);close all;
 
 '2500'
 rrt.core(2000);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/corridoio_2500_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/corridoio_RTT_2500_dist_',num2str(d),'.png')]);close all;
 
 '5000'
 rrt.core(2500);
 f = figure;
 [d,f]=rrt.plot(f,true);
-saveas(f,[pwd strcat('/img/RRT/corridoio_5000_dist_',num2str(d),'.png')]);close all;
+saveas(f,[pwd strcat('/img/RRT/corridoio_RTT_5000_dist_',num2str(d),'.png')]);close all;
 
 
