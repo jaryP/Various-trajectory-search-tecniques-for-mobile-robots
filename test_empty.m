@@ -1,15 +1,15 @@
 close all 
 
 init_conf = [0,0];
-final_conf = [2.5,2.5];
+final_conf = [4.5,4.5];
 
 rng('default');
 rng(42,'simdTwister');
 
-x_min = -3;
-y_min = -3;
-x_max = 3;
-y_max = 3;
+x_min = -5;
+y_min = -5;
+x_max = 5;
+y_max = 5;
 
 
 'RRT Star'
