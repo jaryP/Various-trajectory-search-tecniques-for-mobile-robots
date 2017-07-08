@@ -37,11 +37,6 @@ rrt.core(1000);
 f = figure;
 [d1,f] = rrt.plot(f,true);
 f.Name = strcat('RRTS:  dist:',num2str(d1));
-saveas(f,[pwd strcat('/img/RRTS/OBJ_RRTS_1000_dist_',num2str(d1),'.png')]);
-rrt.core(1000);
-f = figure;
-[d1,f] = rrt.plot(f,true);
-f.Name = strcat('RRTS:  dist:',num2str(d1));
 saveas(f,[pwd strcat('/img/RRTS/OBJ_RRTS_2000_dist_',num2str(d1),'.png')]);
 rrt.core(1000);
 f = figure;
@@ -58,6 +53,11 @@ f = figure;
 [d1,f] = rrt.plot(f,true);
 f.Name = strcat('RRTS:  dist:',num2str(d1));
 saveas(f,[pwd strcat('/img/RRTS/OBJ_RRTS_5000_dist_',num2str(d1),'.png')]);
+rrt.core(1000);
+f = figure;
+[d1,f] = rrt.plot(f,true);
+f.Name = strcat('RRTS:  dist:',num2str(d1));
+saveas(f,[pwd strcat('/img/RRTS/OBJ_RRTS_6000_dist_',num2str(d1),'.png')]);
 
 rng(28);
 
@@ -68,11 +68,6 @@ f = figure;
 f.Name = strcat('RRT:  dist:',num2str(d1));
 saveas(f,[pwd strcat('/img/RRT/OBJ_RRT_500_dist_',num2str(d1),'.png')]);
 rrt.core(500);
-f = figure;
-[d1,f] = rrt.plot(f,true);
-f.Name = strcat('RRT:  dist:',num2str(d1));
-saveas(f,[pwd strcat('/img/RRT/OBJ_RRT_1000_dist_',num2str(d1),'.png')]);
-rrt.core(1000);
 f = figure;
 [d1,f] = rrt.plot(f,true);
 f.Name = strcat('RRT:  dist:',num2str(d1));
@@ -97,6 +92,11 @@ f = figure;
 [d1,f] = rrt.plot(f,true);
 f.Name = strcat('RRT:  dist:',num2str(d1));
 saveas(f,[pwd strcat('/img/RRT/OBJ_RRT_5000_dist_',num2str(d1),'.png')]);
+rrt.core(1000);
+f = figure;
+[d1,f] = rrt.plot(f,true);
+f.Name = strcat('RRT:  dist:',num2str(d1));
+saveas(f,[pwd strcat('/img/RRT/OBJ_RRT_6000_dist_',num2str(d1),'.png')]);
 
 
 
