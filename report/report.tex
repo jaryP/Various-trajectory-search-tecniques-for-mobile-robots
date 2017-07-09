@@ -81,7 +81,7 @@
 	
 	While RRTs have been show to be extremely effective at generating feasible solution in the configuration space, they provide no control on the quality of the found path. This problem is accentuated if the space contains non uniform cost sub-spaces. And for a robot in a real world is important to find a good path in a fast way.
 	
-	The basic behaviour of this class of algorithms are the following one: at each iteration the algorithm  sample a new point in the free space. Then calculate the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacles, the new vertex and the edge, that connects the new point and the nearest one, are added to the graph. This is show in \textit{figure 1}.
+	The basic behaviour of this class of algorithms are the following one: at each iteration the algorithm  sample a new point in the free space. Then calculate the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacles, the new vertex and the edge, that connects the new point and the nearest one, are added to the graph. This is show in figure \ref{fig:extension}.
 	
 		
 	The algorithms in this section are probabilistic complete. This means that, if a path exist from the initial vertex to the goal one, the probability that the algorithm fails to find that path asymptotically approaches zero with $n \rightarrow \inf$. 
@@ -92,6 +92,7 @@
 		\centering
 		\includegraphics[width=0.8\linewidth]{rrtExt.png}
 		\caption{The extending procedure}
+		\label{fig:extension}
 	\end{figure}
 \FloatBarrier
 	\subsubsection{Rapidly-exploring Random Trees (RRT)}
@@ -241,17 +242,18 @@ for i = 1$\dots$ n do
 	
 	\end{lstlisting}
 	\FloatBarrier
-	\begin{figure}
+	\begin{figure}[hbt]
 		\centering
 		\includegraphics[width=\linewidth]{rrtRew.png}
 		\caption{The rewrite process}
+		\label{fig:rewrite}
 	\end{figure}
 	\FloatBarrier
 	The basic iteration are the same of RRT. The main difference is that, if the connection between $x_{nearest}$ and $x_{new}$ is collision free, the algorithm get all the configuration inside the ball centred in $x_{new}$. Then, we get the configuration in the sphere that minimize the the cost of the path from $x_{init}$ to that configuration, passing trough $x_{new}$, and connect that configuration to $x_{new}$.
 	
 	After that the algorithm rewrite the tree. For each configuration inside the sphere the algorithm check if is convenient to change the father of that configuration with $x_{new}$. This is true if the cost of the path will be lower passing trough $x_{new}$.
 	
-	The rewrite process is show in \textit{figure 2}.
+	The rewrite process is show in figure: \ref{fig:rewrite}.
 
 	
 	\section{Set up and Experiments}
@@ -259,147 +261,341 @@ for i = 1$\dots$ n do
 	\subsection{Implementation of the algorithm}
 	\subsection{Experiments}
 	
+	In the first experiment aims to show the difference between RTT and RRT*. Both algorithm were run with the same sample sequence and without goal bias, so the differences resides in the edges of the graph. The results are showed in figure: \ref{fig:empty}. We can see that, despite we don't have a goal bias, RRT* can decrease the path cost by working on local edges, even without a goal bias.
 	
-\begin{figure}
+	The second set of experiment involves a space contains obstacles. Even in this case we run each algorithm for 6000 iterations with a goal bias equals to 0.7.
+	
+	In the first scenario we have narrow passage and a wide one. We see that both of the algorithm, RRT and RRT*, can go through the narrow passage. We can also see that, since RRT* improve the cost locally to the sampled configuration, it is more hard to improve the passage in the narrow space. For this reason the difference in cost between the two paths found is not notable. The second scenario differs from the first one for the lack of the narrow passage. The images show that the RRT* can improve the path significantly respect the RRT version.
+	
+	The third scenario is a simply and without relevant property, while in the last one we have the starting point "trapped". In both cases the RRT* works better than the basic version.
+	
+	All of the scenarios are showed in figure: \ref{fig:ostacoli}, where each line of the figure contains a scenario.
+	
+	The last experiment aims to show the performance of the RRT* and Anytime RRT compared. We have an obstacle free space that contains some areas that modify the cost o the edges. The darkest one double the cost of the edge that lies in the area, while the brighter will half the cost. In this experiments makes no sense compare the basic RRT. The resulting plot are show in figure: \ref{fig:corridoio}. 
+	
+	The result for the set of experiment containing objects are show in figure \ref{fig:ris1} and \ref{fig:ris2}. As we expected the cost of the path found by RRT is constant, because the algorithm tramp itself and there is no chance to discovery a better path. On the other hand the path found by RRT* will become better at each iteration, with an improvement rate that depends on the problem instances.
+	  
+\begin{figure}[!hbt]
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{empty_250_dist_0}
+		\includegraphics[width=\linewidth]{empty_RTT_250_dist_0}
 		\caption{RRT after 250 iterations}
 	\end{minipage}
 		\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{empty_500_dist_0}
+		\includegraphics[width=\linewidth]{empty_RTT_500_dist_0}
 		\caption{RRT after 500 iterations}
 	\end{minipage}
 		\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{{empty_2500_dist_7.915}.png}
+		\includegraphics[width=\linewidth]{{empty_RTT_2500_dist_7.915}.png}
 		\caption{RRT after 2500 iterations}	
 	\end{minipage}
 \end{subfigure}
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{rrts_empty_250_dist_0}
+			\includegraphics[width=\linewidth]{empty_RTTS_250_dist_0}
 			\caption{RRT* after 250 iterations}
 		\end{minipage}
 	\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{rtts_empty_500_dist_0}
+			\includegraphics[width=\linewidth]{empty_RTTS_500_dist_0}
 			\caption{RRT* after 500 iterations}
 		\end{minipage}
 	\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\includegraphics[width=\linewidth]{{empty_RTTS_2500_dist_6.6714}.png}
 			\caption{RRT* after 2500 iterations}	
 		\end{minipage}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
 		\centering
 			\begin{minipage}[b]{0.45\linewidth}
-				\includegraphics[width=\linewidth]{{empty_5000_dist_7.915}.png}
+				\includegraphics[width=\linewidth]{{empty_RTT_5000_dist_7.915}.png}
 				\caption{RRT after 5000 iterations}
 			\end{minipage}
 		\hfill
 			\begin{minipage}[b]{0.45\linewidth}
-				\includegraphics[width=\linewidth]{{rtts_empty_5000_dist_6.4041}.png}
+				\includegraphics[width=\linewidth]{{empty_RTTS_5000_dist_6.4041}.png}
 				\caption{RRTS* after 5000 iterations}
 			\end{minipage}
 	\end{subfigure}
 \caption{The configuration exploration differences between RRT and RRT* in an empty space, without goal bias.}
+\label{fig:empty}
 \end{figure}
-
-
-\begin{figure}
+\begin{figure}[!hbt]
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_RRT_5000_dist_6.3905}.png}
+			\includegraphics[width=\linewidth]{{OBJ_RRT_6000_dist_6.3905}.png}
 			\caption{RRT}
 		\end{minipage}
 	\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_RRTS_5000_dist_6.1611}.png}
+			\includegraphics[width=\linewidth]{{OBJ_RRTS_6000_dist_6.1611}.png}
 			\caption{RRT*}
 		\end{minipage}
 	\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\includegraphics[width=\linewidth]{}
 			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_2_RRT_5000_dist_21.0447}.png}
+			\includegraphics[width=\linewidth]{{OBJ_2_RRT_6000_dist_21.0447}.png}
 			\caption{RRT}
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_2_RRTS_5000_dist_15.0202}.png}
+			\includegraphics[width=\linewidth]{{OBJ_2_RRTS_6000_dist_15.0202}.png}
 			\caption{RRT*}
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+			\includegraphics[width=\linewidth]{}
 			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_1_RRT_5000_dist_13.7746}.png}
+			\includegraphics[width=\linewidth]{{OBJ_1_RRT_6000_dist_13.7746}.png}
 			\caption{RRT}
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{{OBJ_1_RRTS_5000_dist_11.1521}.png}
+			\includegraphics[width=\linewidth]{{OBJ_1_RRTS_6000_dist_11.1521}.png}
 			\caption{RRT*}
 		\end{minipage}
 			\hfill
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+		\includegraphics[width=\linewidth]{}
 		\caption{Anytime RRT}
 	\end{minipage}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
 	\centering
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{{OBJ_3_RRT_5000_dist_17.4342}.png}
+		\includegraphics[width=\linewidth]{{OBJ_3_RRT_6000_dist_17.4342}.png}
 		\caption{RRT}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{{OBJ_3_RRTS_5000_dist_12.2502}.png}
+		\includegraphics[width=\linewidth]{{OBJ_3_RRTS_6000_dist_12.2502}.png}
 		\caption{RRT*}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
+		\includegraphics[width=\linewidth]{}
 		\caption{Anytime RRT}
+
 	\end{minipage}
 
 
 	\end{subfigure}
-	\caption{Some tests done in different obstacle environment}
+	\caption{Some tests done in different obstacle environment. RRT and RRT* were run for 6000 iterations.}
+			\label{fig:ostacoli}
 \end{figure}
-
-\begin{figure}
+\begin{figure}[!hbt]
 	\begin{subfigure}{\textwidth}
 		\centering	
-
 		\begin{minipage}[b]{0.45\linewidth}
 			\includegraphics[width=\linewidth]{{corridoio_RTTS_5000_dist_6.339}.png}
-			\caption{Anytime RRT}
+			\caption{RRT*}
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.45\linewidth}
-			\includegraphics[width=\linewidth]{{rtts_empty_2500_dist_6.6714}.png}
-			\caption{RRT*}	
+			\includegraphics[width=\linewidth]{}
+			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
 	\caption{Results in an environment contains non uniforms cost area}
+	\label{fig:corridoio}
 	
 \end{figure}
+\begin{figure}[!hbt]
+
+	\begin{subfigure}{\textwidth}
+	\centering
+		\begin{tikzpicture}
+		
+		\begin{axis}[
+		xlabel = path cost,
+		%	xtick={1,2,3},
+		ylabel=iterations,
+			width = 0.8\linewidth,	
+		height = 150,
+		legend pos= south west
+		]
+		\addlegendentry{RRT}
+		\addplot 
+		coordinates {
+			(500,6.39)
+			(1000,6.39)
+			(2000,6.39)
+			(3000,6.39)
+			(4000,6.39)
+			(5000,6.39)
+			(6000,6.39)
+		};
+		\addlegendentry{RRT*}
+		\addplot 
+		coordinates {
+			(500,6.39)
+			(1000,6.39)
+			(2000,6.37)
+			(3000,6.33)
+			(4000,6.31)
+			(5000,6.28)
+			(6000,6.16)	
+		};
+		
+		\end{axis}
+		
+		\end{tikzpicture}
+		\caption{Path cost per iteration on scenario 1 }
+
+	\end{subfigure}
+	
+	\begin{subfigure}{\textwidth}
+	\centering
+	\begin{tikzpicture}
+
+\begin{axis}[
+xlabel = path cost,
+%	xtick={1,2,3},
+ylabel=iterations,
+	width = 0.8\linewidth,	
+	height = 150,
+	legend pos= south west
+]
+\addlegendentry{RRT}
+\addplot 
+coordinates {
+	(500,21.04)
+	(1000,21.04)
+	(2000,21.04)
+	(3000,21.04)
+	(4000,21.04)
+	(5000,21.04)
+	(6000,21.04)
+};
+\addlegendentry{RRT*}
+\addplot 
+coordinates {
+	(500,20.43)
+	(1000,18.45)
+	(2000,17.60)
+	(3000,16.99)
+	(4000,17.07)
+	(5000,16.19)
+	(6000,15.02)	
+};
+
+\end{axis}
+
+\end{tikzpicture}
+\caption{Path cost per iteration on scenario 2 }
+
+	\end{subfigure}
+\caption{Results for the fist two scenarios}
+		\label{fig:ris1}
+
+\end{figure}
+\begin{figure}[!hbt]
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\begin{tikzpicture}
+		
+		\begin{axis}[
+		xlabel = path cost,
+		%	xtick={1,2,3},
+		ylabel=iterations,
+		width = 0.8\linewidth,	
+		height = 150,
+		legend pos= south west
+		]
+		\addlegendentry{RRT}
+		\addplot 
+		coordinates {
+			(500,13.77)
+			(1000,13.77)
+			(2000,13.77)
+			(3000,13.77)
+			(4000,13.77)
+			(5000,13.77)
+			(6000,13.77)
+		};
+		\addlegendentry{RRT*}
+		\addplot 
+		coordinates {
+			(500,13.44)
+			(1000,12.85)
+			(2000,12.67)
+			(3000,11.79)
+			(4000,11.36)
+			(5000,11.23)
+			(6000,11.15)	
+		};
+		
+		\end{axis}
+		
+		\end{tikzpicture}
+		\caption{Path cost per iteration on scenario 3 }
+		
+	\end{subfigure}
+	
+	\begin{subfigure}{\textwidth}
+		
+		
+		\centering
+		\begin{tikzpicture}
+		
+		\begin{axis}[
+		xlabel = path cost,
+		%	xtick={1,2,3},
+		ylabel=iterations,
+		width = 0.8\linewidth,	
+		height = 150,
+		legend pos= south west
+		]
+		\addlegendentry{RRT}
+		\addplot 
+		coordinates {
+
+			(1000,17.43)
+			(2000,17.43)
+			(3000,17.43)
+			(4000,17.43)
+			(5000,17.43)
+			(6000,17.43)
+		};
+		\addlegendentry{RRT*}
+		\addplot 
+		coordinates {
+			
+			(1000,16.20)
+			(2000,15.40)
+			(3000,15.07)
+			(4000,13.52)
+			(5000,12.67)
+			(6000,12.25)	
+		};
+		
+		\end{axis}
+		
+		\end{tikzpicture}
+		\caption{Path cost per iteration on scenario 4 }
+		
+	\end{subfigure}
+\caption{Results for the last two scenarios}
+\label{fig:ris2}
+
+\end{figure}
+
 \FloatBarrier
 	\section{Conclusion}
 \end{document}
