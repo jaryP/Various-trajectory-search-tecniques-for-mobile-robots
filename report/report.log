@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.3.30)  9 JUL 2017 22:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.3.30)  10 JUL 2017 17:11
 entering extended mode
 **./report.tex
 (report.tex
@@ -1189,14 +1189,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--71
 
  []
 
+[1
 
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
 Underfull \hbox (badness 10000) in paragraph at lines 72--73
 
  []
 
-[1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
 Underfull \hbox (badness 10000) in paragraph at lines 74--75
 
  []
@@ -1236,42 +1236,42 @@ Package pdftex.def Info: rrtRew.png used on input line 247.
 File: empty_RTT_250_dist_0.png Graphic file (type png)
 
 <use empty_RTT_250_dist_0.png>
-Package pdftex.def Info: empty_RTT_250_dist_0.png used on input line 282.
+Package pdftex.def Info: empty_RTT_250_dist_0.png used on input line 283.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <empty_RTT_500_dist_0.png, id=156, 421.575pt x 316.0608pt>
 File: empty_RTT_500_dist_0.png Graphic file (type png)
 
 <use empty_RTT_500_dist_0.png>
-Package pdftex.def Info: empty_RTT_500_dist_0.png used on input line 286.
+Package pdftex.def Info: empty_RTT_500_dist_0.png used on input line 287.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <empty_RTT_2500_dist_7.915.png, id=157, 421.575pt x 316.0608pt>
 File: empty_RTT_2500_dist_7.915.png Graphic file (type png)
 
 <use empty_RTT_2500_dist_7.915.png>
-Package pdftex.def Info: empty_RTT_2500_dist_7.915.png used on input line 290.
+Package pdftex.def Info: empty_RTT_2500_dist_7.915.png used on input line 291.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <empty_RTTS_250_dist_0.png, id=158, 421.575pt x 316.0608pt>
 File: empty_RTTS_250_dist_0.png Graphic file (type png)
 
 <use empty_RTTS_250_dist_0.png>
-Package pdftex.def Info: empty_RTTS_250_dist_0.png used on input line 297.
+Package pdftex.def Info: empty_RTTS_250_dist_0.png used on input line 298.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <empty_RTTS_500_dist_0.png, id=159, 421.575pt x 316.0608pt>
 File: empty_RTTS_500_dist_0.png Graphic file (type png)
 
 <use empty_RTTS_500_dist_0.png>
-Package pdftex.def Info: empty_RTTS_500_dist_0.png used on input line 302.
+Package pdftex.def Info: empty_RTTS_500_dist_0.png used on input line 303.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <empty_RTTS_2500_dist_6.6714.png, id=160, 421.575pt x 316.0608pt>
 File: empty_RTTS_2500_dist_6.6714.png Graphic file (type png)
 
 <use empty_RTTS_2500_dist_6.6714.png>
-Package pdftex.def Info: empty_RTTS_2500_dist_6.6714.png used on input line 307
+Package pdftex.def Info: empty_RTTS_2500_dist_6.6714.png used on input line 308
 .
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
@@ -1279,14 +1279,14 @@ Package pdftex.def Info: empty_RTTS_2500_dist_6.6714.png used on input line 307
 File: empty_RTT_5000_dist_7.915.png Graphic file (type png)
 
 <use empty_RTT_5000_dist_7.915.png>
-Package pdftex.def Info: empty_RTT_5000_dist_7.915.png used on input line 314.
+Package pdftex.def Info: empty_RTT_5000_dist_7.915.png used on input line 315.
 (pdftex.def)             Requested size: 243.26941pt x 182.38461pt.
 
 <empty_RTTS_5000_dist_6.4041.png, id=162, 421.575pt x 316.0608pt>
 File: empty_RTTS_5000_dist_6.4041.png Graphic file (type png)
 
 <use empty_RTTS_5000_dist_6.4041.png>
-Package pdftex.def Info: empty_RTTS_5000_dist_6.4041.png used on input line 319
+Package pdftex.def Info: empty_RTTS_5000_dist_6.4041.png used on input line 320
 .
 (pdftex.def)             Requested size: 243.26941pt x 182.38461pt.
 
@@ -1294,167 +1294,139 @@ Package pdftex.def Info: empty_RTTS_5000_dist_6.4041.png used on input line 319
 File: OBJ_RRT_6000_dist_6.3905.png Graphic file (type png)
 
 <use OBJ_RRT_6000_dist_6.3905.png>
-Package pdftex.def Info: OBJ_RRT_6000_dist_6.3905.png used on input line 330.
+Package pdftex.def Info: OBJ_RRT_6000_dist_6.3905.png used on input line 332.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
 <OBJ_RRTS_6000_dist_6.1611.png, id=164, 421.575pt x 316.0608pt>
 File: OBJ_RRTS_6000_dist_6.1611.png Graphic file (type png)
 
 <use OBJ_RRTS_6000_dist_6.1611.png>
-Package pdftex.def Info: OBJ_RRTS_6000_dist_6.1611.png used on input line 335.
+Package pdftex.def Info: OBJ_RRTS_6000_dist_6.1611.png used on input line 337.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
+<Anytime_1000__1_final_6_5952.jpg, id=165, 878.28125pt x 658.46pt>
+File: Anytime_1000__1_final_6_5952.jpg Graphic file (type jpg)
 
-! LaTeX Error: File `' not found.
+<use Anytime_1000__1_final_6_5952.jpg>
+Package pdftex.def Info: Anytime_1000__1_final_6_5952.jpg used on input line 34
+2.
+(pdftex.def)             Requested size: 172.99672pt x 129.69026pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.340 			\includegraphics[width=\linewidth]{}
-                                             
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-<OBJ_2_RRT_6000_dist_21.0447.png, id=165, 421.575pt x 316.0608pt>
+<OBJ_2_RRT_6000_dist_21.0447.png, id=166, 421.575pt x 316.0608pt>
 File: OBJ_2_RRT_6000_dist_21.0447.png Graphic file (type png)
 
 <use OBJ_2_RRT_6000_dist_21.0447.png>
-Package pdftex.def Info: OBJ_2_RRT_6000_dist_21.0447.png used on input line 347
+Package pdftex.def Info: OBJ_2_RRT_6000_dist_21.0447.png used on input line 349
 .
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
-<OBJ_2_RRTS_6000_dist_15.0202.png, id=166, 421.575pt x 316.0608pt>
+<OBJ_2_RRTS_6000_dist_15.0202.png, id=167, 421.575pt x 316.0608pt>
 File: OBJ_2_RRTS_6000_dist_15.0202.png Graphic file (type png)
 
 <use OBJ_2_RRTS_6000_dist_15.0202.png>
 Package pdftex.def Info: OBJ_2_RRTS_6000_dist_15.0202.png used on input line 35
-2.
+4.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
+<Anytime_1000__1_final_17_3836.jpg, id=168, 878.28125pt x 658.46pt>
+File: Anytime_1000__1_final_17_3836.jpg Graphic file (type jpg)
 
-! LaTeX Error: File `' not found.
+<use Anytime_1000__1_final_17_3836.jpg>
+Package pdftex.def Info: Anytime_1000__1_final_17_3836.jpg used on input line 3
+59.
+(pdftex.def)             Requested size: 172.99672pt x 129.69026pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.357 			\includegraphics[width=\linewidth]{}
-                                             
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-<OBJ_1_RRT_6000_dist_13.7746.png, id=167, 421.575pt x 316.0608pt>
+<OBJ_1_RRT_6000_dist_13.7746.png, id=169, 421.575pt x 316.0608pt>
 File: OBJ_1_RRT_6000_dist_13.7746.png Graphic file (type png)
 
 <use OBJ_1_RRT_6000_dist_13.7746.png>
-Package pdftex.def Info: OBJ_1_RRT_6000_dist_13.7746.png used on input line 364
+Package pdftex.def Info: OBJ_1_RRT_6000_dist_13.7746.png used on input line 366
 .
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
-<OBJ_1_RRTS_6000_dist_11.1521.png, id=168, 421.575pt x 316.0608pt>
+<OBJ_1_RRTS_6000_dist_11.1521.png, id=170, 421.575pt x 316.0608pt>
 File: OBJ_1_RRTS_6000_dist_11.1521.png Graphic file (type png)
 
 <use OBJ_1_RRTS_6000_dist_11.1521.png>
-Package pdftex.def Info: OBJ_1_RRTS_6000_dist_11.1521.png used on input line 36
-9.
+Package pdftex.def Info: OBJ_1_RRTS_6000_dist_11.1521.png used on input line 37
+1.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
+<Anytime_1000__2_final_14_3568.jpg, id=171, 878.28125pt x 658.46pt>
+File: Anytime_1000__2_final_14_3568.jpg Graphic file (type jpg)
 
-! LaTeX Error: File `' not found.
+<use Anytime_1000__2_final_14_3568.jpg>
+Package pdftex.def Info: Anytime_1000__2_final_14_3568.jpg used on input line 3
+76.
+(pdftex.def)             Requested size: 172.99672pt x 129.69026pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.374 		\includegraphics[width=\linewidth]{}
-                                            
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-<OBJ_3_RRT_6000_dist_17.4342.png, id=169, 421.575pt x 316.0608pt>
+<OBJ_3_RRT_6000_dist_17.4342.png, id=172, 421.575pt x 316.0608pt>
 File: OBJ_3_RRT_6000_dist_17.4342.png Graphic file (type png)
 
 <use OBJ_3_RRT_6000_dist_17.4342.png>
-Package pdftex.def Info: OBJ_3_RRT_6000_dist_17.4342.png used on input line 381
+Package pdftex.def Info: OBJ_3_RRT_6000_dist_17.4342.png used on input line 383
 .
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
-<OBJ_3_RRTS_6000_dist_12.2502.png, id=170, 421.575pt x 316.0608pt>
+<OBJ_3_RRTS_6000_dist_12.2502.png, id=173, 421.575pt x 316.0608pt>
 File: OBJ_3_RRTS_6000_dist_12.2502.png Graphic file (type png)
 
 <use OBJ_3_RRTS_6000_dist_12.2502.png>
 Package pdftex.def Info: OBJ_3_RRTS_6000_dist_12.2502.png used on input line 38
-6.
+8.
 (pdftex.def)             Requested size: 172.99672pt x 129.7015pt.
 
+<Anytime_1000__3_final_14_4331.jpg, id=174, 878.28125pt x 658.46pt>
+File: Anytime_1000__3_final_14_4331.jpg Graphic file (type jpg)
 
-! LaTeX Error: File `' not found.
+<use Anytime_1000__3_final_14_4331.jpg>
+Package pdftex.def Info: Anytime_1000__3_final_14_4331.jpg used on input line 3
+93.
+(pdftex.def)             Requested size: 172.99672pt x 129.69026pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.391 		\includegraphics[width=\linewidth]{}
-                                            
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-<corridoio_RTTS_5000_dist_6.339.png, id=171, 421.575pt x 316.0608pt>
+<corridoio_RTTS_5000_dist_6.339.png, id=175, 421.575pt x 316.0608pt>
 File: corridoio_RTTS_5000_dist_6.339.png Graphic file (type png)
 
 <use corridoio_RTTS_5000_dist_6.339.png>
 Package pdftex.def Info: corridoio_RTTS_5000_dist_6.339.png used on input line 
-405.
+407.
 (pdftex.def)             Requested size: 243.26941pt x 182.38461pt.
 
+<Anytime_1000__3_final_7_0093.jpg, id=176, 878.28125pt x 658.46pt>
+File: Anytime_1000__3_final_7_0093.jpg Graphic file (type jpg)
 
-! LaTeX Error: File `' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.410 			\includegraphics[width=\linewidth]{}
-                                             
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[5] [6 <./empty_RTT_250_dist_0.png (PNG copy)> <./empty_RTT_500_dist_0.png (PNG
- copy)> <./empty_RTT_2500_dist_7.915.png (PNG copy)> <./empty_RTTS_250_dist_0.p
-ng (PNG copy)> <./empty_RTTS_500_dist_0.png (PNG copy)> <./empty_RTTS_2500_dist
-_6.6714.png (PNG copy)> <./empty_RTT_5000_dist_7.915.png (PNG copy)> <./empty_R
-TTS_5000_dist_6.4041.png (PNG copy)>] [7 <./OBJ_RRT_6000_dist_6.3905.png (PNG c
-opy)> <./OBJ_RRTS_6000_dist_6.1611.png (PNG copy)> <./OBJ_2_RRT_6000_dist_21.04
-47.png (PNG copy)> <./OBJ_2_RRTS_6000_dist_15.0202.png (PNG copy)> <./OBJ_1_RRT
-_6000_dist_13.7746.png (PNG copy)> <./OBJ_1_RRTS_6000_dist_11.1521.png (PNG cop
-y)> <./OBJ_3_RRT_6000_dist_17.4342.png (PNG copy)> <./OBJ_3_RRTS_6000_dist_12.2
-502.png (PNG copy)>] [8 <./corridoio_RTTS_5000_dist_6.339.png (PNG copy)>]
-[9] [10
+<use Anytime_1000__3_final_7_0093.jpg>
+Package pdftex.def Info: Anytime_1000__3_final_7_0093.jpg used on input line 41
+2.
+(pdftex.def)             Requested size: 243.26941pt x 182.37817pt.
+ [5] [6 <./empty_RTT_250_dist_0.png (PNG copy)> <./empty_RTT_500_dist_0.png (PN
+G copy)> <./empty_RTT_2500_dist_7.915.png (PNG copy)> <./empty_RTTS_250_dist_0.
+png (PNG copy)> <./empty_RTTS_500_dist_0.png (PNG copy)> <./empty_RTTS_2500_dis
+t_6.6714.png (PNG copy)> <./empty_RTT_5000_dist_7.915.png (PNG copy)> <./empty_
+RTTS_5000_dist_6.4041.png (PNG copy)>]
+[7 <./OBJ_RRT_6000_dist_6.3905.png (PNG copy)> <./OBJ_RRTS_6000_dist_6.1611.png
+ (PNG copy)> <./Anytime_1000__1_final_6_5952.jpg> <./OBJ_2_RRT_6000_dist_21.044
+7.png (PNG copy)> <./OBJ_2_RRTS_6000_dist_15.0202.png (PNG copy)> <./Anytime_10
+00__1_final_17_3836.jpg> <./OBJ_1_RRT_6000_dist_13.7746.png (PNG copy)> <./OBJ_
+1_RRTS_6000_dist_11.1521.png (PNG copy)> <./Anytime_1000__2_final_14_3568.jpg> 
+<./OBJ_3_RRT_6000_dist_17.4342.png (PNG copy)> <./OBJ_3_RRTS_6000_dist_12.2502.
+png (PNG copy)> <./Anytime_1000__3_final_14_4331.jpg>] [8 <./corridoio_RTTS_500
+0_dist_6.339.png (PNG copy)> <./Anytime_1000__3_final_7_0093.jpg>] [9] [10
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 601.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 601.
- (report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 601.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 601.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 601.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 603.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 603.
+
+(report.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 603.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 603.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 603.
  ) 
 Here is how much of TeX's memory you used:
- 29974 strings out of 493333
- 696280 string characters out of 3139197
- 905405 words of memory out of 3000000
- 32886 multiletter control sequences out of 15000+200000
+ 29986 strings out of 493333
+ 697120 string characters out of 3139197
+ 905621 words of memory out of 3000000
+ 32905 multiletter control sequences out of 15000+200000
  14287 words of font info for 55 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,21n,103p,725b,2374s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1475,9 +1447,9 @@ blic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
 fonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
 cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb
 ><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on report.pdf (10 pages, 1824889 bytes).
+Output written on report.pdf (10 pages, 2015921 bytes).
 PDF statistics:
- 329 PDF objects out of 1000 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 204 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 330 PDF objects out of 1000 (max. 8388607)
+ 121 named destinations out of 1000 (max. 500000)
+ 221 words of extra memory for PDF output out of 10000 (max. 10000000)
 

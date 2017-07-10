@@ -32,59 +32,59 @@
 \begin{document}
 	\maketitle
 	\section{Introduction}
-	In this project we have studied the problem of motion planning. More precisely we have used and compared different algorithm. 
+	In this project we have studied the problem of motion planning. More precisely we have used and compared different algorithms. 
 	
-	Informally speaking, the motion planning problem aims to find a path, for a specified robot, from a point A to a point B avoiding obstacles. In practices this problem is very hard for a computational complexity point of view, since need to map the environment in the configuration space of the robot. 
+	Informally speaking, the motion planning problem aims to find a path, for a specified robot, from a point A to a point B avoiding obstacles. In practice this problem is very hard from a computational complexity point of view, since it needs to map the environment in the configuration space of the robot. 
 	
-	The strength of the algorithm that we have used is that, instead of build and use an explicit representation fo the robot in its configuration space, they rely on a collision checking module. With this approach we build a graph of feasible trajectories in the obstacle free space. The the road map can be used to build the solution for planning problem for a specific robot.
+	The strength of the algorithms that we have used is that, instead of building and using an explicit representation for the robot in its configuration space, they rely on a collision checking module. With this approach we build a graph of feasible trajectories in the obstacle free space. Then the road map can be used to build the solution to the planning problem for a specific robot.
 	
 	\section{Motion planning problem}
-	In this section we will define the planning problem and the primitive procedure that will be used by the algorithms, then we will expose them.
+	In this section we will define the planning problem and the primitive procedures that will be used by the algorithms, then we will explain them.
 	
 	\subsection{Problem formulation}
 	In this section we will formalize the problem of path planning.\\
 	
 	Let $\chi \in(0,1)^d$ be the configuration space, where $d\in\mathbb{N}$ with $d\ge2$, and $\chi_{obs}$ is the obstacle region of the space. The $\chi_{free}$ is the portion of the space that does not contains obstacles.
-	The we define an initial position $x_{init} \in \chi_{free}$ and a goal region $\chi_{goal} \subset \chi_{free}$. A path planing problem is defined by a triple $(\chi_{free},x_{init},\chi_{goal}) $. 
+	Then we define an initial position $x_{init} \in \chi_{free}$ and a goal region $\chi_{goal} \subset \chi_{free}$. A path planing problem is defined by a triple $(\chi_{free},x_{init},\chi_{goal}) $. 
 	
-	The goal of a path planner is to find a feasible path from $x_{init}$ to $\chi_{goal}$ in $\chi_{free}$, if exists, and report failure otherwise.\\
+	The goal of a path planner is to find a feasible path from $x_{init}$ to $\chi_{goal}$ in $\chi_{free}$, if it exists, and report failure otherwise.\\
 	
-	To do this we build a DAG (direct acyclic graph) of possible road maps from the initial point to the other point in $\chi_{free}$. The we get the optimal path from all the possible ones.
+	To do this we build a DAG (direct acyclic graph) of possible road maps from the initial point to the other point in $\chi_{free}$. Then we get the optimal path from all the possible ones.
 	
 	\subsection{Primitive procedures}
 	Before discussing the implemented algorithm we introduce the principal procedures that we will use.\\
 	
-	\textbf{SampleFree:} is a function that return a point $x_{r} \in \chi_{free}$. The samples are assumed to be draw from a uniform distribution, and each one is independent from others.\\
+	\textbf{SampleFree:} is a function that returns a point $x_{r} \in \chi_{free}$. The samples are assumed to be drawn from a uniform distribution, and each one is independent from others.\\
 	
 	
-	\textbf{NearestNode:} Given a a graph $G=(V,E)$ and a point $x\in\chi_{free}$, where $v\subset\chi$, the function return a point $x_{near} \in V$ that is the closest to $x$ given the euclidean distance. Formally: 
+	\textbf{NearestNode:} Given a a graph $G=(V,E)$ and a point $x\in\chi_{free}$, where $v\subset\chi$, the function returns a point $x_{near} \in V$ that is the closest to $x$ given the euclidean distance. Formally: 
 	\begin{align}
     getNearest (G,x) := argmin_{v \in V} ||x - v|| \nonumber
 	\end{align}
-	The are other two versions of the method. One version of this function, taken another value r, will return a set of $x\in V$ that are contained in a ball of radius $r$ centred in $x$, the other one return k nearest vertex to $x$.\\  
+	The are other two versions of the methods. One version of this function, taken another value r, will return a set of $x\in V$ that are contained in a ball of radius $r$ centred in $x$, the other one returns k nearest vertex to $x$.\\  
 	
-	\textbf{Steer:} Given two point $x,y \in \chi$, the function steer returns a point $z \in \chi$ that minimize the distance from $z$ to $y$ while $||z-x|| \le \eta$, with $\eta > 0$. \\
+	\textbf{Steer:} Given two point $x,y \in \chi$, the function steer returns a point $z \in \chi$ that minimizes	 the distance from $z$ to $y$ while $||z-x|| \le \eta$, with $\eta > 0$. \\
 	
-	\textbf{collisionFree:} Given two point $x,y \in \chi_{free}$ the function return true if the line that connect $x$ to $y$ lies in $\chi_{free}$.\\
+	\textbf{collisionFree:} Given two points $x,y \in \chi_{free}$ the function return true if the line that connects $x$ to $y$ lies in $\chi_{free}$.\\
 	
-	\textbf{Parent:} Given a Graph $G=(V,E)$ and an $x\in V$, the method return a point $y \in V$ that satisfy $(y,x) \in E$. By convention, if $x$ is the root node of $V$ this function will return $x$.\\
+	\textbf{Parent:} Given a Graph $G=(V,E)$ and an $x\in V$, the method return a point $y \in V$ that satisfies $(y,x) \in E$. By convention, if $x$ is the root node of $V$ this function will return $x$.\\
 	
-	\textbf{Line:} Given two points $x,y \in \chi$, the methods return a line that go from the point $x$ to the point $y$.\\
+	\textbf{Line:} Given two points $x,y \in \chi$, the method returns a line that goes from the point $x$ to the point $y$.\\
 	
-	\textbf{Cost:} Given a graph $G=(V,E)$, a node $v_{start} \in V$ and another node $v_{goal} \in V$, the methods will return the cost $c \in\mathbb{R}$ of the unique path from $v_{start}$ to the node $v$. By convention the cost of the root node is zero. If only one node is give, the method return the distance from the root of the graph to $v_{goal}$.\\
+	\textbf{Cost:} Given a graph $G=(V,E)$, a node $v_{start} \in V$ and another node $v_{goal} \in V$, the method will return the cost $c \in\mathbb{R}$ of the unique path from $v_{start}$ to the node $v$. By convention the cost of the root node is zero. If only one node is given, the method returns the distance from the root of the graph to $v_{goal}$.\\
 
-	\subsection{Existing Algorithm}
+	\subsection{Existing Algorithms}
 
-	Rapidly-exploring Random Trees (RRT) based algorithm are very effective for solving the path planning problem for high complex configuration space. This because that class of algorithm combine random sampling of the configuration space with biased sampling around a desired goal. A good property that follow from the random sampling is that the construction of the tree growth is biased towards unexplored areas of the configuration space.
+	Rapidly-exploring Random Trees (RRT) based algorithms are very effective for solving the path planning problem for high complex configuration space. This because that class of algorithm combines random sampling of the configuration space with biased sampling around a desired goal. A good property that follows from the random sampling is that the construction of the construction of the tree is biased towards unexplored areas of the configuration space.
 	
-	This class of algorithm aim to build a road-map graph in the configuration space from a root tree to a feasible goal region. Another property of this class is that the algorithms are single query, so each road-map is relative to a single problem. 
+	This class of algorithms aim to build a road-map graph in the configuration space from a root tree to a feasible goal region. Another property of this class is that the algorithms are single query, so each road-map is relative to a single problem. 
 	
-	While RRTs have been show to be extremely effective at generating feasible solution in the configuration space, they provide no control on the quality of the found path. This problem is accentuated if the space contains non uniform cost sub-spaces. And for a robot in a real world is important to find a good path in a fast way.
+	While RRTs have been shown to be extremely effective at generating feasible solution in the configuration space, they provide no control on the quality of the found path. This problem is accentuated if the space contains non uniform cost sub-spaces, And for a robot in a real world it is important to find a good path in a fast way.
 	
-	The basic behaviour of this class of algorithms are the following one: at each iteration the algorithm  sample a new point in the free space. Then calculate the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacles, the new vertex and the edge, that connects the new point and the nearest one, are added to the graph. This is show in figure \ref{fig:extension}.
+	The basic behaviour of this class of algorithms is the following one: at each iteration the algorithm samples a new point in the free space. Then it computes the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacle, the new vertex and the edge that connects the new point and the nearest one, are added to the graph. This is shown in figure \ref{fig:extension}.
 	
 		
-	The algorithms in this section are probabilistic complete. This means that, if a path exist from the initial vertex to the goal one, the probability that the algorithm fails to find that path asymptotically approaches zero with $n \rightarrow \inf$. 
+	The algorithms in this section are probabilistically complete. This means that, if a path exist from the initial vertex to the goal one, the probability that the algorithm fails to find that path asymptotically approaches zero with $n \rightarrow \inf$. 
 	
 	
 	\FloatBarrier
@@ -97,9 +97,9 @@
 \FloatBarrier
 	\subsubsection{Rapidly-exploring Random Trees (RRT)}
 	
-	This is the simplest RRT algorithm. In this basic version, the algorithm does not take into account the distance of the path, if one is found, from the start vertex to the goal region. On the other it is very fast in exploring, randomly, the configuration space.
+	This is the simplest RRT algorithm. In this basic version, the algorithm does not take into account the length of the path, if one is found, from the start vertex to the goal region. On the other hand it is very fast in exploring, randomly, the configuration space.
 
-	In this version of the algorithm we perform the basic operations n times, so the algorithm does not stop if reach the goal but keep running until the number of iteration is not reached. 
+	In this version of the algorithm we perform the basic operations n times, so the algorithm does not stop it reaches the goal but it keeps running until the number of iteration is not reached. 
 	\begin{lstlisting}[frame=single, mathescape=true,caption={RRT}]
 G = ($x_{init},\emptyset$)
 for i = 1$\dots$ n do
@@ -114,13 +114,13 @@ for i = 1$\dots$ n do
 		)\}$
 	\end{lstlisting}
 	
-	One negative results tell us that the cost of the best path found by the RRT procedure converges to a random variable. This implies that the cost of the solution converges to a suboptimal value, with probability one. It is possible to implements different heuristic in order to improve the solution, but the the sub-optimality still. So this basic algorithm is probabilistic complete but not asymptotic optimal.
+	One negative result tell us that the cost of the best path found by the RRT procedure converges to a random variable. This implies that the cost of the solution converges to a suboptimal value, with probability one. It is possible to implements different heuristics in order to improve the solution, but the the sub-optimality still remains. So this basic algorithm is probabilistically complete but not asymptotically optimal.
 	
 	\subsubsection{Anytime RRT}
 	
-	The main idea behind this approach is that we have a limited amount of time. In this time we run a basic RRT algorithm, and if there is some time left, it tries to generate a new RRT path ensuring that the cost of than new path is lower than the previously found. This is achieved by limiting the nodes added to the tree to the only ones that can contribute to a solution with lower overall cost. 
+	The main idea behind this approach is that we have a limited amount of time. In this time we run a basic RRT algorithm, and if there is some time left, it tries to generate a new RRT path ensuring that the cost of that new path is lower than the previously found. This is achieved by limiting the nodes added to the tree to the only ones that can contribute to a solution with lower overall cost. 
 	
-	This approach assures that each new tree contains a path that cost less regard all the previously trees. However this approach does not guarantees that a new solution can be produced. To ensure that the new solution will cost less then the previously one the algorithm incorporate cost consideration and bias factor on the methods.
+	This approach ensures that each new tree contains a path that cost less with respect to all the previously built trees. However this approach does not guarantee that a new solution can be produced. To ensure that the new solution will cost less than the previous one the algorithm incorporate cost consideration and bias factor on the methods.
 	
 	\noindent\begin{minipage}{.48\textwidth}
 		\begin{lstlisting}[frame=single, mathescape=true,caption={Anytime RRT}]
@@ -195,15 +195,15 @@ $\textbf{SelCost}(G,x,x_{target})$
 
 	\subsubsection{RRT*}
 	
-	This algorithm still use a tree graph, but with the improvement that the graph are modified at each iteration, if it discover better path from the root to the actual node.
+	This algorithm still uses a tree graph, but with the improvement that the graph is modified at each iteration, if the algorithm discover a better path from the root to the actual node.
 	
-	This algorithm add a point to the graph in the same way as RTT does, but it also consider connection from a subset of the vertex called xNear. This set contains the nodes that are inside a ball of radius 
+	This algorithm adds a point to the graph in the same way as RTT does, but it also considers connection from a subset of the vertex called xNear. This set contains the nodes that are inside a ball of radius 
 	\begin{align}
 		 min\left\{\gamma_{RRT}\left(\frac{log(card(V)}{card(V)}\right)^{1/d},\eta\right\}
 		\nonumber
 	\end{align}
 	
-	where d are the dimension of the configuration space $\chi$, $\eta$ is the constant of steering function and $\gamma_{RRT}$ are a constant related related to the shape of the configuration space, and it is equal to
+	where d is the dimension of the configuration space $\chi$, $\eta$ is the constant of steering function and $\gamma_{RRT}$ is a constant related related to the shape of the configuration space, and it is equal to
 	
 	\begin{align}
 	2\left(1+\frac{1}{d}\right)^{1/d} \left(\frac{\mu(\chi_{free})}{\varsigma_{d}}\right)^{1/d}
@@ -245,37 +245,38 @@ for i = 1$\dots$ n do
 	\begin{figure}[hbt]
 		\centering
 		\includegraphics[width=\linewidth]{rrtRew.png}
-		\caption{The rewrite process}
+		\caption{The rewriting process}
 		\label{fig:rewrite}
 	\end{figure}
 	\FloatBarrier
-	The basic iteration are the same of RRT. The main difference is that, if the connection between $x_{nearest}$ and $x_{new}$ is collision free, the algorithm get all the configuration inside the ball centred in $x_{new}$. Then, we get the configuration in the sphere that minimize the the cost of the path from $x_{init}$ to that configuration, passing trough $x_{new}$, and connect that configuration to $x_{new}$.
+	The basic iteration is the same of RRT. The main difference is that, if the connection between $x_{nearest}$ and $x_{new}$ is collision free, the algorithm takes all the configurations inside the ball centred in $x_{new}$. Then, we get the configuration in the sphere that minimizes the cost of the path from $x_{init}$ to that configuration, passing trough $x_{new}$, and connects that configuration to $x_{new}$.
 	
-	After that the algorithm rewrite the tree. For each configuration inside the sphere the algorithm check if is convenient to change the father of that configuration with $x_{new}$. This is true if the cost of the path will be lower passing trough $x_{new}$.
+	After that the algorithm rewrites the tree. For each configuration inside the sphere the algorithm check if is convenient to change the father of that configuration with $x_{new}$. This is true if the cost of the path will be lower passing trough $x_{new}$.
 	
-	The rewrite process is show in figure: \ref{fig:rewrite}.
+	The rewriting process is shown in figure: \ref{fig:rewrite}.
 
 	
 	\section{Set up and Experiments}
 	In this section we will explain the implementation and we'll show the results of the experiments.
-	\subsection{Implementation of the algorithm}
+
 	\subsection{Experiments}
 	
-	In the first experiment aims to show the difference between RTT and RRT*. Both algorithm were run with the same sample sequence and without goal bias, so the differences resides in the edges of the graph. The results are showed in figure: \ref{fig:empty}. We can see that, despite we don't have a goal bias, RRT* can decrease the path cost by working on local edges, even without a goal bias.
+	The first experiment aims to show the difference between RTT and RRT*. Both algorithms were run with the same sample sequence and without goal bias, so the differences resides in the edges of the graph. The results are shown in figure: \ref{fig:empty}. We can see that, despite we don't have a goal bias, RRT* can decrease the path cost by working on local edges, even without a goal bias.
 	
-	The second set of experiment involves a space contains obstacles. Even in this case we run each algorithm for 6000 iterations with a goal bias equals to 0.7.
+	The second set of experiments involves a space containing obstacles. In this case we run each algorithm for 6000 iterations with a goal bias equals to 0.7.
 	
-	In the first scenario we have narrow passage and a wide one. We see that both of the algorithm, RRT and RRT*, can go through the narrow passage. We can also see that, since RRT* improve the cost locally to the sampled configuration, it is more hard to improve the passage in the narrow space. For this reason the difference in cost between the two paths found is not notable. The second scenario differs from the first one for the lack of the narrow passage. The images show that the RRT* can improve the path significantly respect the RRT version.
+	In the first scenario we have a narrow passage and a wide one. We see that both of the algorithms, RRT and RRT*, can go through the narrow passage. We can also see that, since RRT* improve the cost locally to the sampled configuration, it is more difficult to improve the passage in the narrow space. For this reason the difference in cost between the two paths found is not notable. The second scenario differs from the first one for the lack of the narrow passage. The images show that the RRT* can improve the path significantly respect the RRT version.
 	
-	The third scenario is a simply and without relevant property, while in the last one we have the starting point "trapped". In both cases the RRT* works better than the basic version.
+	The third scenario is a simple and without relevant properties, while in the last one we have the starting point "trapped". In both cases the RRT* works better than the basic version.
 	
-	All of the scenarios are showed in figure: \ref{fig:ostacoli}, where each line of the figure contains a scenario.
+	All of the scenarios are shown in figure: \ref{fig:ostacoli}.
 	
-	The last experiment aims to show the performance of the RRT* and Anytime RRT compared. We have an obstacle free space that contains some areas that modify the cost o the edges. The darkest one double the cost of the edge that lies in the area, while the brighter will half the cost. In this experiments makes no sense compare the basic RRT. The resulting plot are show in figure: \ref{fig:corridoio}. 
+	The last experiment aims to show the performances of the RRT* and Anytime RRT compared. We have an obstacle free space that contains some areas that modify the cost of the edges. The darkest one double the cost of the edge that lies in the area, while the brighter will half the cost. In this experiments makes no sense compare the basic RRT. The resulting plot are shown in figure: \ref{fig:corridoio}. 
 	
-	The result for the set of experiment containing objects are show in figure \ref{fig:ris1} and \ref{fig:ris2}. As we expected the cost of the path found by RRT is constant, because the algorithm tramp itself and there is no chance to discovery a better path. On the other hand the path found by RRT* will become better at each iteration, with an improvement rate that depends on the problem instances.
-	  
+	The result for the set of experiments containing objects are show in figure \ref{fig:ris1} and \ref{fig:ris2}. As we expected the cost of the path found by RRT is constant, because the algorithm traps itself and there is no chance to discover a better path. On the other hand the path found by RRT* will become better at each iteration, with an improvement rate that depends on the problem instances.
+%Empty figure 
 \begin{figure}[!hbt]
+	
 	\begin{subfigure}{\textwidth}
 		\centering
 		\begin{minipage}[b]{0.32\linewidth}
@@ -323,6 +324,7 @@ for i = 1$\dots$ n do
 \caption{The configuration exploration differences between RRT and RRT* in an empty space, without goal bias.}
 \label{fig:empty}
 \end{figure}
+
 \begin{figure}[!hbt]
 	\begin{subfigure}{\textwidth}
 		\centering
@@ -337,7 +339,7 @@ for i = 1$\dots$ n do
 		\end{minipage}
 	\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{}
+			\includegraphics[width=\linewidth]{Anytime_1000__1_final_6_5952}
 			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
@@ -354,7 +356,7 @@ for i = 1$\dots$ n do
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.32\linewidth}
-			\includegraphics[width=\linewidth]{}
+			\includegraphics[width=\linewidth]{Anytime_1000__1_final_17_3836}
 			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
@@ -371,7 +373,7 @@ for i = 1$\dots$ n do
 		\end{minipage}
 			\hfill
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{}
+		\includegraphics[width=\linewidth]{Anytime_1000__2_final_14_3568}
 		\caption{Anytime RRT}
 	\end{minipage}
 	\end{subfigure}
@@ -388,7 +390,7 @@ for i = 1$\dots$ n do
 	\end{minipage}
 	\hfill
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{}
+		\includegraphics[width=\linewidth]{Anytime_1000__3_final_14_4331}
 		\caption{Anytime RRT}
 
 	\end{minipage}
@@ -407,7 +409,7 @@ for i = 1$\dots$ n do
 		\end{minipage}
 		\hfill
 		\begin{minipage}[b]{0.45\linewidth}
-			\includegraphics[width=\linewidth]{}
+			\includegraphics[width=\linewidth]{Anytime_1000__3_final_7_0093}
 			\caption{Anytime RRT}	
 		\end{minipage}
 	\end{subfigure}
