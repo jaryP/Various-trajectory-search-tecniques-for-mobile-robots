@@ -23,8 +23,8 @@
 
 \setlength{\parindent}{0cm}
 \setlength{\parindent}{1em}
-\title{A.M.R. Project report}
-\author{Caterina Lacerra, Jary Pomponi}
+\title{A.M.R. Project report\\RRT, RRT* and Anytime RRT: a comparison}
+\author{Caterina Lacerra, Gioacchino Manfredi, Jary Pomponi}
 \renewcommand{\lstlistingname}{Algorithm}
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=black,bookmarksopen=true]{hyperref}
 
@@ -79,7 +79,7 @@
 	
 	This class of algorithms aim to build a road-map graph in the configuration space from a root tree to a feasible goal region. Another property of this class is that the algorithms are single query, so each road-map is relative to a single problem. 
 	
-	While RRTs have been shown to be extremely effective at generating feasible solution in the configuration space, they provide no control on the quality of the found path. This problem is accentuated if the space contains non uniform cost sub-spaces, And for a robot in a real world it is important to find a good path in a fast way.
+	While RRTs have been shown to be extremely effective at generating feasible solution in the configuration space, they provide no control on the quality of the found path. This problem is accentuated if the space contains non uniform cost sub-spaces, and for a robot in a real world it is important to find a good path in a fast way.
 	
 	The basic behaviour of this class of algorithms is the following one: at each iteration the algorithm samples a new point in the free space. Then it computes the nearest vertex in V to the sampled point, and then the algorithm tries to connect the nearest vertex to this random point, using the \textbf{Steer} function. If the connection does not collide with any obstacle, the new vertex and the edge that connects the new point and the nearest one, are added to the graph. This is shown in figure \ref{fig:extension}.
 	
@@ -95,11 +95,12 @@
 		\label{fig:extension}
 	\end{figure}
 \FloatBarrier
+\newpage
 	\subsubsection{Rapidly-exploring Random Trees (RRT)}
 	
 	This is the simplest RRT algorithm. In this basic version, the algorithm does not take into account the length of the path, if one is found, from the start vertex to the goal region. On the other hand it is very fast in exploring, randomly, the configuration space.
 
-	In this version of the algorithm we perform the basic operations n times, so the algorithm does not stop it reaches the goal but it keeps running until the number of iteration is not reached. 
+	In this version of the algorithm we perform the basic operations n times, so the algorithm does not stop when it reaches the goal but it keeps running until the number of iteration is not reached. 
 	\begin{lstlisting}[frame=single, mathescape=true,caption={RRT}]
 G = ($x_{init},\emptyset$)
 for i = 1$\dots$ n do
@@ -114,13 +115,13 @@ for i = 1$\dots$ n do
 		)\}$
 	\end{lstlisting}
 	
-	One negative result tell us that the cost of the best path found by the RRT procedure converges to a random variable. This implies that the cost of the solution converges to a suboptimal value, with probability one. It is possible to implements different heuristics in order to improve the solution, but the the sub-optimality still remains. So this basic algorithm is probabilistically complete but not asymptotically optimal.
+	One negative result tell us that the cost of the best path found by the RRT procedure converges to a random variable. This implies that the cost of the solution converges to a suboptimal value, with probability one. It is possible to implements different heuristics in order to improve the solution, but the sub-optimality still remains. So this basic algorithm is probabilistically complete but not asymptotically optimal.
 	
 	\subsubsection{Anytime RRT}
 	
-	The main idea behind this approach is that we have a limited amount of time. In this time we run a basic RRT algorithm, and if there is some time left, it tries to generate a new RRT path ensuring that the cost of that new path is lower than the previously found. This is achieved by limiting the nodes added to the tree to the only ones that can contribute to a solution with lower overall cost. 
+	The main idea behind this approach is that we have a limited amount of time. In this time we run a basic RRT algorithm, and if there is some time left, it tries to generate a new RRT path ensuring that the cost of that new path is lower than the one previously found. This is achieved by limiting the nodes added to the tree to the only ones that can contribute to a solution with lower overall cost. 
 	
-	This approach ensures that each new tree contains a path that cost less with respect to all the previously built trees. However this approach does not guarantee that a new solution can be produced. To ensure that the new solution will cost less than the previous one the algorithm incorporate cost consideration and bias factor on the methods.
+	This approach ensures that each new tree contains a path that costs less with respect to all the previously built trees. However this approach does not guarantee that a new solution can be produced. To ensure that the new solution will cost less than the previous one, the algorithm incorporates cost considerations and bias factor on the methods.
 	
 	\noindent\begin{minipage}{.48\textwidth}
 		\begin{lstlisting}[frame=single, mathescape=true,caption={Anytime RRT}]
@@ -213,7 +214,7 @@ $\textbf{SelCost}(G,x,x_{target})$
 	where  $\mu(\chi_{free})$ denotes the volume of the free space and $\varsigma_{d}$ is the volume of the unit ball in the d-dimensional 	Euclidean space.
 	
 	In our case d is equal to 2.
-	
+	\newpage
 		\begin{lstlisting}[frame=single, mathescape=true,caption={RRT*}]
 G = ($x_{init},\emptyset$)
 for i = 1$\dots$ n do
@@ -251,11 +252,11 @@ for i = 1$\dots$ n do
 	\FloatBarrier
 	The basic iteration is the same of RRT. The main difference is that, if the connection between $x_{nearest}$ and $x_{new}$ is collision free, the algorithm takes all the configurations inside the ball centred in $x_{new}$. Then, we get the configuration in the sphere that minimizes the cost of the path from $x_{init}$ to that configuration, passing trough $x_{new}$, and connects that configuration to $x_{new}$.
 	
-	After that the algorithm rewrites the tree. For each configuration inside the sphere the algorithm check if is convenient to change the father of that configuration with $x_{new}$. This is true if the cost of the path will be lower passing trough $x_{new}$.
+	After that the algorithm rewires the tree. For each configuration inside the sphere the algorithm checks if is convenient to change the father of that configuration with $x_{new}$. This is true if the cost of the path will be lower passing trough $x_{new}$.
 	
-	The rewriting process is shown in figure: \ref{fig:rewrite}.
+	The rewiring process is shown in figure: \ref{fig:rewrite}.
 
-	
+	\newpage
 	\section{Set up and Experiments}
 	In this section we will explain the implementation and we'll show the results of the experiments.
 
@@ -265,11 +266,13 @@ for i = 1$\dots$ n do
 	
 	The second set of experiments involves a space containing obstacles. In this case we run each algorithm for 6000 iterations with a goal bias equals to 0.7.
 	
-	In the first scenario we have a narrow passage and a wide one. We see that both of the algorithms, RRT and RRT*, can go through the narrow passage. We can also see that, since RRT* improve the cost locally to the sampled configuration, it is more difficult to improve the passage in the narrow space. For this reason the difference in cost between the two paths found is not notable. The second scenario differs from the first one for the lack of the narrow passage. The images show that the RRT* can improve the path significantly respect the RRT version.
+	In the first scenario we have a narrow passage and a wide one. We see that both of the algorithms, RRT and RRT*, can go through the narrow passage. We can also see that, since RRT* improves the cost locally to the sampled configuration, it is more difficult to improve the passage in the narrow space. For this reason the difference in cost between the two paths found is not notable. The second scenario differs from the first one for the lack of the narrow passage. The images show that the RRT* can improve the path significantly respect the RRT version.
 	
 	The third scenario is a simple and without relevant properties, while in the last one we have the starting point "trapped". In both cases the RRT* works better than the basic version.
 	
-	All of the scenarios are shown in figure: \ref{fig:ostacoli}.
+	
+	All of the scenarios are shown in figure: \ref{fig:ostacoli}.\\
+	The last column of figure \ref{fig:ostacoli} shows a comparison between the standard RRT and the Anytime RRT. The RRT has been run with 1000 iterations, while the Anytime RRT stops as fast as it finds a solution, with at most 1000 iterations. The plotted path of the Anytime is the last (i.e. the best of) 5 consecutive executions, where the upper bound of each iteration is the cost of the previous one, slightly reduced (the cost bias $c_b$ and the distance bias $d_b$ are respectively augmented and decremented of 0.1 at each iteration).
 	
 	The last experiment aims to show the performances of the RRT* and Anytime RRT compared. We have an obstacle free space that contains some areas that modify the cost of the edges. The darkest one double the cost of the edge that lies in the area, while the brighter will half the cost. In this experiments makes no sense compare the basic RRT. The resulting plot are shown in figure: \ref{fig:corridoio}. 
 	
@@ -600,7 +603,8 @@ coordinates {
 
 \FloatBarrier
 	\section{Conclusions}
-	Summarizing, the aim of our work was to implement and compare the performances of the RRT algorithm with those of the RRT$*$ and of the Anytime RRT. From a theoretical point of view, all the algorithms described in this paper are probabilistically complete, but while the RRT tries to randomly explore all the free space, the other two approaches are oriented to find an optimal solution, respectively by rewiring the graph when a better solution is found or by adding to the graph only nodes that can lead to a smaller cost.\\
-	This, as we have seen with the experiments, leads the RRT* and the Anytime RRT to outperform the RRT, finding shortest paths, or paths through areas with a lower cost.
+	Summarizing, the aim of our work was to implement and compare the performances of the RRT algorithm with those of the RRT* and of the Anytime RRT. From a theoretical point of view, all the algorithms described in this paper are probabilistically complete, but while the RRT tries to randomly explore all the free space, the other two approaches include cost considerations during the computation,  thus producing optimal solutions.
+	As we have seen, the RRT* rewires the tree when a better solution is found, thus maintaining only the best path to the goal node, while the Anytime version of the RRT provides a first solution and the continues to improve it by adding to the tree only the nodes that can guarantee a total path cost smaller than the upper bound, given by the cost of the previous solution.\\
+	This, as we have seen with the experiments, leads the RRT* and the Anytime RRT to outperform the RRT, finding shortest paths, or paths through areas with a lower cost. These two variations of the RRT algorithm are then asymptotically optimal.\\
 \end{document}
 
